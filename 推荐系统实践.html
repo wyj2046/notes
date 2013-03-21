@@ -1,0 +1,2106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>推荐系统实践</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="推荐系统实践"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-01-31 20:40:18 CST"/>
+<meta name="author" content="wyj"/>
+<meta name="description" content=""/>
+<meta name="keywords" content="notes, data mining"/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="./style/style.css" />
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">推荐系统实践</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 第1章 好的推荐系统</a>
+<ul>
+<li><a href="#sec-1-1">1.1 什么是推荐系统</a></li>
+<li><a href="#sec-1-2">1.2 个性化推荐系统的应用</a>
+<ul>
+<li><a href="#sec-1-2-1">1.2.1 电子商务</a></li>
+<li><a href="#sec-1-2-2">1.2.2 电影和视频网站</a></li>
+<li><a href="#sec-1-2-3">1.2.3 个性化音乐网络电台</a></li>
+<li><a href="#sec-1-2-4">1.2.4 社交网络</a></li>
+<li><a href="#sec-1-2-5">1.2.5 个性化阅读</a></li>
+<li><a href="#sec-1-2-6">1.2.6 基于位置的服务</a></li>
+<li><a href="#sec-1-2-7">1.2.7 个性化邮件</a></li>
+<li><a href="#sec-1-2-8">1.2.8 个性化广告</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-3">1.3 推荐系统评测</a>
+<ul>
+<li><a href="#sec-1-3-1">1.3.1 推荐系统实验方法</a></li>
+<li><a href="#sec-1-3-2">1.3.2 评测指标</a></li>
+<li><a href="#sec-1-3-3">1.3.3 评测维度</a></li>
+</ul></li>
+</ul>
+</li>
+<li><a href="#sec-2">2 第2章 利用用户行为数据</a>
+<ul>
+<li><a href="#sec-2-1">2.1 用户行为数据简介</a></li>
+<li><a href="#sec-2-2">2.2 用户行为分析</a>
+<ul>
+<li><a href="#sec-2-2-1">2.2.1 用户活跃度和物品流行度的分布</a></li>
+<li><a href="#sec-2-2-2">2.2.2 用户活跃度和物品流行度的关系</a></li>
+</ul>
+</li>
+<li><a href="#sec-2-3">2.3 实验设计和算法评测</a>
+<ul>
+<li><a href="#sec-2-3-1">2.3.1 数据集</a></li>
+<li><a href="#sec-2-3-2">2.3.2 实验设计</a></li>
+<li><a href="#sec-2-3-3">2.3.3 评测指标</a></li>
+</ul>
+</li>
+<li><a href="#sec-2-4">2.4 基于邻域的算法</a>
+<ul>
+<li><a href="#sec-2-4-1">2.4.1 基于用户的协同过滤算法</a></li>
+<li><a href="#sec-2-4-2">2.4.2 基于物品的协同过滤算法</a></li>
+<li><a href="#sec-2-4-3">2.4.3 UserCF和ItemCF的综合比较</a></li>
+</ul>
+</li>
+<li><a href="#sec-2-5">2.5 隐语义模型</a>
+<ul>
+<li><a href="#sec-2-5-1">2.5.1 基础算法</a></li>
+<li><a href="#sec-2-5-2">2.5.2 基于LFM的实际系统的例子</a></li>
+<li><a href="#sec-2-5-3">2.5.3 LFM和基于邻域的方法的比较</a></li>
+</ul>
+</li>
+<li><a href="#sec-2-6">2.6 基于图的模型</a>
+<ul>
+<li><a href="#sec-2-6-1">2.6.1 用户行为数据的二分图表示</a></li>
+<li><a href="#sec-2-6-2">2.6.2 基于图的推荐算法</a></li>
+</ul></li>
+</ul>
+</li>
+<li><a href="#sec-3">3 第3章 推荐系统冷启动问题</a>
+<ul>
+<li><a href="#sec-3-1">3.1 冷启动问题简介</a></li>
+<li><a href="#sec-3-2">3.2 利用用户注册信息</a></li>
+<li><a href="#sec-3-3">3.3 选择合适的物品启动用户的兴趣</a></li>
+<li><a href="#sec-3-4">3.4 利用物品的内容信息</a></li>
+<li><a href="#sec-3-5">3.5 发挥专家的作用</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4 第4章 利用用户标签数据</a>
+<ul>
+<li><a href="#sec-4-1">4.1 UGC标签系统的代表应用</a>
+<ul>
+<li><a href="#sec-4-1-1">4.1.1 Delicious</a></li>
+<li><a href="#sec-4-1-2">4.1.2 CiteULike</a></li>
+<li><a href="#sec-4-1-3">4.1.3 Last.fm</a></li>
+<li><a href="#sec-4-1-4">4.1.4 豆瓣</a></li>
+<li><a href="#sec-4-1-5">4.1.5 Hulu</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-2">4.2 标签系统中的推荐问题</a>
+<ul>
+<li><a href="#sec-4-2-1">4.2.1 用户为什么进行标注</a></li>
+<li><a href="#sec-4-2-2">4.2.2 用户如何打标签</a></li>
+<li><a href="#sec-4-2-3">4.2.3 用户打什么样的标签</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-3">4.3 基于标签的推荐系统</a>
+<ul>
+<li><a href="#sec-4-3-1">4.3.1 实验设置</a></li>
+<li><a href="#sec-4-3-2">4.3.2 一个最简单的算法</a></li>
+<li><a href="#sec-4-3-3">4.3.3 算法的改进</a></li>
+<li><a href="#sec-4-3-4">4.3.4 基于图的推荐算法</a></li>
+<li><a href="#sec-4-3-5">4.3.5 基于标签的推荐解释</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-4">4.4 给用户推荐标签</a>
+<ul>
+<li><a href="#sec-4-4-1">4.4.1 为什么要给用户推荐标签</a></li>
+<li><a href="#sec-4-4-2">4.4.2 如何给用户推荐标签</a></li>
+<li><a href="#sec-4-4-3">4.4.3 实验设置</a></li>
+<li><a href="#sec-4-4-4">4.4.4 基于图的标签推荐算法</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-5">4.5 扩展阅读</a></li>
+</ul>
+</li>
+<li><a href="#sec-5">5 第5章 利用上下文信息</a>
+<ul>
+<li><a href="#sec-5-1">5.1 时间上下文信息</a>
+<ul>
+<li><a href="#sec-5-1-1">5.1.1 时间效应简介</a></li>
+<li><a href="#sec-5-1-2">5.1.2 时间效应举例</a></li>
+<li><a href="#sec-5-1-3">5.1.3 系统时间特性的分析</a></li>
+<li><a href="#sec-5-1-4">5.1.4 推荐系统的实时性</a></li>
+<li><a href="#sec-5-1-5">5.1.5 推荐算法的时间多样性</a></li>
+<li><a href="#sec-5-1-6">5.1.6 时间上下文推荐算法</a></li>
+<li><a href="#sec-5-1-7">5.1.7 时间段图模型</a></li>
+<li><a href="#sec-5-1-8">5.1.8 离线实验</a></li>
+</ul>
+</li>
+<li><a href="#sec-5-2">5.2 地点上下文信息</a></li>
+<li><a href="#sec-5-3">5.3 扩展阅读</a></li>
+</ul>
+</li>
+<li><a href="#sec-6">6 第6章 利用社交网络数据</a>
+<ul>
+<li><a href="#sec-6-1">6.1 获取社交网络数据的途径</a>
+<ul>
+<li><a href="#sec-6-1-1">6.1.1 电子邮件</a></li>
+<li><a href="#sec-6-1-2">6.1.2 用户注册信息</a></li>
+<li><a href="#sec-6-1-3">6.1.3 用户的位置数据</a></li>
+<li><a href="#sec-6-1-4">6.1.4 论坛和讨论组</a></li>
+<li><a href="#sec-6-1-5">6.1.5 即使聊天工具</a></li>
+<li><a href="#sec-6-1-6">6.1.6 社交网站</a></li>
+</ul>
+</li>
+<li><a href="#sec-6-2">6.2 社交网络数据简介</a></li>
+<li><a href="#sec-6-3">6.3 基于社交网络的推荐</a>
+<ul>
+<li><a href="#sec-6-3-1">6.3.1 基于邻域的社会化推荐算法</a></li>
+<li><a href="#sec-6-3-2">6.3.2 基于图的社会化推荐算法</a></li>
+<li><a href="#sec-6-3-3">6.3.3 实际系统中的社会化推荐算法</a></li>
+<li><a href="#sec-6-3-4">6.3.4 社会化推荐系统和协同过滤推荐系统</a></li>
+<li><a href="#sec-6-3-5">6.3.5 信息流推荐</a></li>
+</ul>
+</li>
+<li><a href="#sec-6-4">6.4 给用户推荐好友</a>
+<ul>
+<li><a href="#sec-6-4-1">6.4.1 基于内容的匹配</a></li>
+<li><a href="#sec-6-4-2">6.4.2 基于共同兴趣的好友推荐</a></li>
+<li><a href="#sec-6-4-3">6.4.3 基于社交网络图的好友推荐</a></li>
+<li><a href="#sec-6-4-4">6.4.4 基于用户调查的好友推荐算法对比</a></li>
+</ul>
+</li>
+<li><a href="#sec-6-5">6.5 扩展阅读</a></li>
+</ul>
+</li>
+<li><a href="#sec-7">7 第7章 推荐系统实例</a>
+<ul>
+<li><a href="#sec-7-1">7.1 外围架构</a></li>
+<li><a href="#sec-7-2">7.2 推荐系统架构</a></li>
+<li><a href="#sec-7-3">7.3 推荐引擎的架构</a>
+<ul>
+<li><a href="#sec-7-3-1">7.3.1 生成用户特征向量</a></li>
+<li><a href="#sec-7-3-2">7.3.2 特征-物品相关推荐</a></li>
+<li><a href="#sec-7-3-3">7.3.3 过滤模块</a></li>
+<li><a href="#sec-7-3-4">7.3.4 排名模块</a></li>
+</ul>
+</li>
+<li><a href="#sec-7-4">7.4 扩展阅读</a></li>
+</ul>
+</li>
+<li><a href="#sec-8">8 第8章 评分预测问题</a>
+<ul>
+<li><a href="#sec-8-1">8.1 离线实验方法</a></li>
+<li><a href="#sec-8-2">8.2 评分预测算法</a>
+<ul>
+<li><a href="#sec-8-2-1">8.2.1 平均值</a></li>
+<li><a href="#sec-8-2-2">8.2.2 基于邻域的方法</a></li>
+<li><a href="#sec-8-2-3">8.2.3 隐语义模型与矩阵分解模型</a></li>
+<li><a href="#sec-8-2-4">8.2.4 加入时间信息</a></li>
+<li><a href="#sec-8-2-5">8.2.5 模型融合</a></li>
+<li><a href="#sec-8-2-6">8.2.6 Netflix Prize的相关实验结果</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 第1章 好的推荐系统</h2>
+<div class="outline-text-2" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> 什么是推荐系统</h3>
+<div class="outline-text-3" id="text-1-1">
+
+<ol>
+<li>社会化推荐
+</li>
+<li>基于内容的推荐
+</li>
+<li>基于协同过滤的推荐
+</li>
+</ol>
+
+<p>   <b>推荐算法的本质是通过一定的方式将用户和物品联系起来</b>
+</p></div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> 个性化推荐系统的应用</h3>
+<div class="outline-text-3" id="text-1-2">
+
+<p>   几乎所有的推荐系统应用都是由前台的展示页面、后台的日志系统以及推荐算法系统3部分构成的
+</p>
+</div>
+
+<div id="outline-container-1-2-1" class="outline-4">
+<h4 id="sec-1-2-1"><span class="section-number-4">1.2.1</span> 电子商务</h4>
+<div class="outline-text-4" id="text-1-2-1">
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2-2" class="outline-4">
+<h4 id="sec-1-2-2"><span class="section-number-4">1.2.2</span> 电影和视频网站</h4>
+<div class="outline-text-4" id="text-1-2-2">
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2-3" class="outline-4">
+<h4 id="sec-1-2-3"><span class="section-number-4">1.2.3</span> 个性化音乐网络电台</h4>
+<div class="outline-text-4" id="text-1-2-3">
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2-4" class="outline-4">
+<h4 id="sec-1-2-4"><span class="section-number-4">1.2.4</span> 社交网络</h4>
+<div class="outline-text-4" id="text-1-2-4">
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2-5" class="outline-4">
+<h4 id="sec-1-2-5"><span class="section-number-4">1.2.5</span> 个性化阅读</h4>
+<div class="outline-text-4" id="text-1-2-5">
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2-6" class="outline-4">
+<h4 id="sec-1-2-6"><span class="section-number-4">1.2.6</span> 基于位置的服务</h4>
+<div class="outline-text-4" id="text-1-2-6">
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2-7" class="outline-4">
+<h4 id="sec-1-2-7"><span class="section-number-4">1.2.7</span> 个性化邮件</h4>
+<div class="outline-text-4" id="text-1-2-7">
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2-8" class="outline-4">
+<h4 id="sec-1-2-8"><span class="section-number-4">1.2.8</span> 个性化广告</h4>
+<div class="outline-text-4" id="text-1-2-8">
+
+<ol>
+<li>上下文广告：和网页内容相关的广告
+</li>
+<li>搜索广告：和用户目的相关的广告
+</li>
+<li>个性化展示广告
+</li>
+</ol>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> 推荐系统评测</h3>
+<div class="outline-text-3" id="text-1-3">
+
+<p>   <b>预测准确度是推荐系统领域的最重要指标</b>
+   好的推荐系统不仅仅能够准确预测用户的行为，而且能够扩展用户的视野，帮助用户发现那些他们可能会感兴趣，但却不那么容易发现的东西
+</p>
+</div>
+
+<div id="outline-container-1-3-1" class="outline-4">
+<h4 id="sec-1-3-1"><span class="section-number-4">1.3.1</span> 推荐系统实验方法</h4>
+<div class="outline-text-4" id="text-1-3-1">
+
+<ul>
+<li id="sec-1-3-1-1">离线实验<br/>
+     步骤：
+<ol>
+<li>通过日志系统获取用户行为数据，并按照一定格式生成一个标准的数据集
+</li>
+<li>将数据集按照一定的规则分成训练集和测试集
+</li>
+<li>在训练集上训练用户兴趣模型，在测试集上进行预测
+</li>
+<li>通过事先定义的离线指标评测算法评测在测试集上的预测结果
+</li>
+</ol>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="left">优点</th><th scope="col" class="left">缺点</th></tr>
+</thead>
+<tbody>
+<tr><td class="left">不需要有对实际系统的控制权</td><td class="left">无法计算商业上关心的指标</td></tr>
+<tr><td class="left">不需要用户参与实验</td><td class="left">离线实验的指标和商业指标存在差距</td></tr>
+<tr><td class="left">速度快，可以测试大量算法</td><td class="left"></td></tr>
+</tbody>
+</table>
+
+</li>
+</ul>
+<ul>
+<li id="sec-1-3-1-2">用户调查<br/>
+
+<p class="verse">
+因为上线测试具有较高的风险，所以需要用户调查<br/>
+</p>
+
+
+<p>
+     测试用户的选择：
+</p><ol>
+<li>尽量保证测试用户的分布和真实用户的分布相同
+</li>
+<li>尽量保证是双盲实验
+</li>
+</ol>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="left">优点</th><th scope="col" class="left">缺点</th></tr>
+</thead>
+<tbody>
+<tr><td class="left">可以获得很多体现用户主观感受的指标</td><td class="left">招募测试用户代价较大</td></tr>
+<tr><td class="left">相对在线实验风险很低，出错后易弥补</td><td class="left">很难组织大规模的测试用户，会使测试结果的统计意义不足</td></tr>
+</tbody>
+</table>
+
+</li>
+</ul>
+<ul>
+<li id="sec-1-3-1-3">在线实验<br/>
+     <b>AB测试</b>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="left">优点</th><th scope="col" class="left">缺点</th></tr>
+</thead>
+<tbody>
+<tr><td class="left">可以公平获得不同算法实际在线时的性能指标</td><td class="left">周期较长，必须进行长期的实验才能得到可靠的结果</td></tr>
+</tbody>
+</table>
+
+     要点：
+<ol>
+<li>不会用AB测试测试所有的算法，而只是用它测试那些在离线实验和用户调查中表现很好的算法
+</li>
+<li>切分流量是AB测试中的关键，不同的层以及控制这些层的团队需要从一个统一的地方获得自己AB测试的流量
+</li>
+<li>不同层之间的流量应该是正交的
+</li>
+</ol>
+
+<p>     一般说来，一个新的推荐算法最终上线，需要完成上面所说的3个实验：
+</p><ol>
+<li>通过离线实验证明它在很多离线指标上优于现有的算法
+</li>
+<li>通过用户调查确定它的用户满意度不低于现有的算法
+</li>
+<li>通过在线的AB测试确定它在我们关心的指标上优于现有的算法     
+</li>
+</ol>
+
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-3-2" class="outline-4">
+<h4 id="sec-1-3-2"><span class="section-number-4">1.3.2</span> 评测指标</h4>
+<div class="outline-text-4" id="text-1-3-2">
+
+<ul>
+<li id="sec-1-3-2-1">用户满意度<br/>
+
+<p class="verse">
+是推荐系统的 <b>最重要指标</b><br/>
+度量方法：购买率、反馈按钮、点击率、用户停留时间、转化率<br/>
+</p>
+
+
+</li>
+</ul>
+<ul>
+<li id="sec-1-3-2-2">预测准确度<br/>
+
+<p class="verse">
+推荐系统 <b>离线评测指标</b> 最重要的指标<br/>
+</p>
+
+
+<p>
+     计算方法：
+</p><ol>
+<li>需要有一个离线的数据集，该数据集包含用户的历史行为记录
+</li>
+<li>将该数据集通过时间分成训练集和测试集
+</li>
+<li>在训练集上建立用户行为和兴趣模型预测用户在测试集上的行为
+</li>
+<li>计算预测行为和测试集上实际行为的重合度作为预测准确度
+</li>
+</ol>
+
+<ul>
+<li id="sec-1-3-2-2-1">评分预测<br/>
+      均方根误差(RMSE) 平均绝对误差(MAE)
+</li>
+</ul>
+<ul>
+<li id="sec-1-3-2-2-2">TopN推荐(给用户一个个性化的推荐列表)<br/>
+      准确率(precision) 召回率(recall)
+</li>
+</ul>
+<ul>
+<li id="sec-1-3-2-2-3">关于评分预测和TopN推荐的讨论<br/>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li id="sec-1-3-2-3">覆盖率<br/>
+
+<p class="verse">
+覆盖率描述推荐系统对物品长尾的发掘能力<br/>
+覆盖率是一个内容提供商会关心的指标<br/>
+用信息熵和基尼系数两个指标来定义覆盖率<br/>
+</p>
+
+
+</li>
+</ul>
+<ul>
+<li id="sec-1-3-2-4">多样性<br/>
+
+<p class="verse">
+为了满足用户广泛的兴趣，推荐列表需要能够覆盖用户不同的兴趣领域，即推荐结果需要具有多样性<br/>
+多样性描述了推荐列表中物品两两之间的不相似性，因此，多样性和相似性是对应的<br/>
+</p>
+
+
+</li>
+</ul>
+<ul>
+<li id="sec-1-3-2-5">新颖性<br/>
+
+<p class="verse">
+新颖性是指给用户推荐那些他们以前没有听过说的物品<br/>
+实现新颖性的最简单办法是，把那些用户之前在网站中对其有过行为的物品从推荐列表中过滤掉<br/>
+评测新颖度的最简单方法是利用推荐结果的平均流行度，因为越不热门的物品越可能让用户觉得新颖<br/>
+</p>
+
+
+</li>
+</ul>
+<ul>
+<li id="sec-1-3-2-6">惊喜度<br/>
+
+<p class="verse">
+如果推荐结果和用户的历史兴趣不相似，但却让用户觉得满意，那么就可以说推荐结果的惊喜度很高，<br/>
+而推荐的新颖性仅仅取决于用户是否听说过这个推荐结果<br/>
+</p>
+
+
+</li>
+</ul>
+<ul>
+<li id="sec-1-3-2-7">信任度<br/>
+     提供推荐系统的信任度主要有两种方法：
+<ol>
+<li>需要增加推荐系统的透明度，而增加透明度的主要办法是提供推荐解释
+</li>
+<li>考虑用户的社交网络信息，利用用户的好友信息给用户做推荐，并且用好友进行推荐解释
+</li>
+</ol>
+
+</li>
+</ul>
+<ul>
+<li id="sec-1-3-2-8">实时性<br/>
+     实时性包括两个方面：
+<ol>
+<li>需要实时地更新推荐列表来满足用户新的行为变化
+</li>
+<li>需要能够将新加入系统的物品推荐给用户
+</li>
+</ol>
+
+</li>
+</ul>
+<ul>
+<li id="sec-1-3-2-9">健壮性<br/>
+
+<p class="verse">
+算法健壮性的评测主要利用模拟攻击<br/>
+设计推荐系统时尽量使用代价比较高的用户行为<br/>
+在使用数据前，进行攻击检测，从而对数据进行清理<br/>
+</p>
+
+
+</li>
+</ul>
+<ul>
+<li id="sec-1-3-2-10">商业指标<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-3-2-11">总结<br/>
+     在给定覆盖率、多样性、新颖性等限制条件下，尽量优化预测准确度(作者看法)
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-3-3" class="outline-4">
+<h4 id="sec-1-3-3"><span class="section-number-4">1.3.3</span> 评测维度</h4>
+<div class="outline-text-4" id="text-1-3-3">
+
+<p>    增加评测维度的目的就是知道一个算法在什么情况下性能最好
+</p>
+<p>
+    评测维度分为如下3种
+</p><ol>
+<li>用户维度
+</li>
+<li>物品维度
+</li>
+<li>时间维度
+</li>
+</ol>
+
+</div>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 第2章 利用用户行为数据</h2>
+<div class="outline-text-2" id="text-2">
+
+<p>  基于用户行为分析的推荐算法也称为协同过滤算法
+</p>
+</div>
+
+<div id="outline-container-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 用户行为数据简介</h3>
+<div class="outline-text-3" id="text-2-1">
+
+
+<p class="verse">
+用户行为数据在网站上最简单的存在形式就是日志<br/>
+用户行为一般分两种：<br/>
+1. 显性反馈行为：用户明确表示对物品喜好的行为<br/>
+2. 隐性反馈行为：不能明确反应用户喜好的行为<br/>
+</p>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">user id</td><td class="left">产生行为的用户的唯一标识</td></tr>
+<tr><td class="left">item id</td><td class="left">产生行为的对象的唯一标识</td></tr>
+<tr><td class="left">behaviour type</td><td class="left">行为的种类(比如是购买还是浏览)</td></tr>
+<tr><td class="left">context</td><td class="left">产生行为的上下文，包括时间和地点等</td></tr>
+<tr><td class="left">behaviour weight</td><td class="left">行为的权重(如果是观看视频的行为，那么这个权重可以是观看时长；如果是打分行为，这个权重可以是分数)</td></tr>
+<tr><td class="left">behaviour content</td><td class="left">行为的内容(如果是评论行为，那么就是评论的文本；如果是打标签的行为，就是标签)</td></tr>
+</tbody>
+</table>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> 用户行为分析</h3>
+<div class="outline-text-3" id="text-2-2">
+
+
+</div>
+
+<div id="outline-container-2-2-1" class="outline-4">
+<h4 id="sec-2-2-1"><span class="section-number-4">2.2.1</span> 用户活跃度和物品流行度的分布</h4>
+<div class="outline-text-4" id="text-2-2-1">
+
+<p>    长尾分布
+</p></div>
+
+</div>
+
+<div id="outline-container-2-2-2" class="outline-4">
+<h4 id="sec-2-2-2"><span class="section-number-4">2.2.2</span> 用户活跃度和物品流行度的关系</h4>
+<div class="outline-text-4" id="text-2-2-2">
+
+<p>    用户越活跃，越倾向于浏览冷门的物品
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> 实验设计和算法评测</h3>
+<div class="outline-text-3" id="text-2-3">
+
+
+</div>
+
+<div id="outline-container-2-3-1" class="outline-4">
+<h4 id="sec-2-3-1"><span class="section-number-4">2.3.1</span> 数据集</h4>
+<div class="outline-text-4" id="text-2-3-1">
+
+</div>
+
+</div>
+
+<div id="outline-container-2-3-2" class="outline-4">
+<h4 id="sec-2-3-2"><span class="section-number-4">2.3.2</span> 实验设计</h4>
+<div class="outline-text-4" id="text-2-3-2">
+
+<ol>
+<li>将用户行为数据集按照均匀分布随机分成M份，挑选一份作为测试集，将剩下的M-1份作为训练集
+</li>
+<li>在训练集上建立用户兴趣模型，并在测试集上对用户行为进行预测，统计出相应的评测指标
+</li>
+<li>为了保证评测指标并不是过拟合的结果，需要进行M次实验，并且每次都使用不同的测试集
+</li>
+<li>将M次实验测出的评测指标的平均值作为最终的评测指标
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-3-3" class="outline-4">
+<h4 id="sec-2-3-3"><span class="section-number-4">2.3.3</span> 评测指标</h4>
+<div class="outline-text-4" id="text-2-3-3">
+
+
+<p class="verse">
+召回率描述有多少比例的用户-物品评分记录包含在最终的推荐列表中<br/>
+准确率描述最终的推荐列表中有多少比例是发生过的用户-物品评分记录<br/>
+覆盖率越高，说明推荐算法越能够将长尾中的物品推荐给用户<br/>
+</p>
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2-4" class="outline-3">
+<h3 id="sec-2-4"><span class="section-number-3">2.4</span> 基于邻域的算法</h3>
+<div class="outline-text-3" id="text-2-4">
+
+
+</div>
+
+<div id="outline-container-2-4-1" class="outline-4">
+<h4 id="sec-2-4-1"><span class="section-number-4">2.4.1</span> 基于用户的协同过滤算法</h4>
+<div class="outline-text-4" id="text-2-4-1">
+
+<ul>
+<li id="sec-2-4-1-1">基础算法<br/>
+     步骤：
+<ol>
+<li>找到和目标用户兴趣相似的用户集合(关键：计算两个用户的兴趣相似度)
+</li>
+<li>找到这个集合中的用户喜欢的，且目标用户没有听说过的物品推荐给目标用户
+</li>
+</ol>
+
+
+<p>
+     参数K(和user兴趣最相似的K个用户)是UserCF的一个重要参数，它的调整对推荐算法的各种指标都会产生一定的影响
+</p></li>
+</ul>
+<ul>
+<li id="sec-2-4-1-2">用户相似度计算的改进<br/>
+     两个用户对冷门物品采取过同样的行为更能说明他们兴趣的相似度
+</li>
+</ul>
+<ul>
+<li id="sec-2-4-1-3">实际在线系统使用UserCF的例子<br/>
+     最著名的使用者是Digg
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-2-4-2" class="outline-4">
+<h4 id="sec-2-4-2"><span class="section-number-4">2.4.2</span> 基于物品的协同过滤算法</h4>
+<div class="outline-text-4" id="text-2-4-2">
+
+<ul>
+<li id="sec-2-4-2-1">基础算法<br/>
+     UserCF的缺点：     
+<ol>
+<li>运算时间复杂度和空间复杂度的增长和用户数的增长近似与平方关系
+</li>
+<li>很难对推荐结果作出解释
+</li>
+</ol>
+
+
+<p>
+     步骤：
+</p><ol>
+<li>计算物品之间的相似度
+</li>
+<li>根据物品的相似度和用户的历史行为给用户生成推荐列表
+</li>
+</ol>
+
+
+<p>
+     在协同过滤中两个物品产生相似度是因为它们共同被很多用户喜欢，也就是说每个用户都可以通过他们的历史兴趣列表给物品“贡献”相似度
+</p>
+<p>
+     ItemCF的一个优势是可以提供推荐解释，即利用用户历史上喜欢的物品为现在的推荐结果进行解释
+</p></li>
+</ul>
+<ul>
+<li id="sec-2-4-2-2">用户活跃度对物品相似度的影响<br/>
+     John S.Breese认为活跃用户对物品相似度的贡献应该小于不活跃的用户
+</li>
+</ul>
+<ul>
+<li id="sec-2-4-2-3">物品相似度的归一化<br/>
+     归一化的好处不仅仅在于增加推荐的准确度，它还以提高推荐的覆盖率和多样性
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-2-4-3" class="outline-4">
+<h4 id="sec-2-4-3"><span class="section-number-4">2.4.3</span> UserCF和ItemCF的综合比较</h4>
+<div class="outline-text-4" id="text-2-4-3">
+
+<p>    UserCF的推荐结果着重于反映和用户兴趣相似的小群体的热点，而ItemCF的推荐结果着重于维护用户的历史兴趣。
+    换句话说，UserCF的推荐更社会化，反映了用户所在的小型兴趣群体中物品的热门程度，而ItemCF的推荐更加个性化，反映了用户自己的兴趣传承
+</p><table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left"></td><td class="left">UserCF</td><td class="left">ItemCF</td></tr>
+<tr><td class="left">性能</td><td class="left">适用于用户较少的场合，如果用户很多，计算用户相似度矩阵代价很大</td><td class="left">适用于物品数明显小于用户数的场合，如果物品很多(网页)，计算无平相似度矩阵代价很大</td></tr>
+<tr><td class="left">领域</td><td class="left">时效性较强，用户个性化兴趣不太明显的领域</td><td class="left">长尾物品丰富，用户个性化需求强烈的领域</td></tr>
+<tr><td class="left">实时性</td><td class="left">用户有新行为，不一定造成推荐结果的立即变化</td><td class="left">用户有新行为，一定会导致推荐结果的实时变化</td></tr>
+<tr><td class="left">冷启动</td><td class="left">1. 在新用户对很少的物品产生行为后，不能立即对他进行个性化推荐，因为用户相似度表是每隔一段时间离线计算的</td><td class="left">1. 新用户只要对一个物品产生行为，就可以给他推荐和该物品相关的其他物品</td></tr>
+<tr><td class="left"></td><td class="left">2. 新物品上线一段时间，一旦有用户对物品产生行为，就可以将新物品推荐给和对它产生行为的用户兴趣相似的其他用户</td><td class="left">2. 没有办法在不离线更新物品相似度表的情况下将新物品推荐给用户</td></tr>
+<tr><td class="left">推荐理由</td><td class="left">很难提供令用户信服的推荐解释</td><td class="left">利用用户的历史行为给用户做推荐解释，可以令用户比较信服</td></tr>
+</tbody>
+</table>
+
+<ul>
+<li id="sec-2-4-3-1">哈利波特问题<br/>
+     两个不同领域的最热门物品之间往往具有比较高的相似度
+</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2-5" class="outline-3">
+<h3 id="sec-2-5"><span class="section-number-3">2.5</span> 隐语义模型</h3>
+<div class="outline-text-3" id="text-2-5">
+
+
+</div>
+
+<div id="outline-container-2-5-1" class="outline-4">
+<h4 id="sec-2-5-1"><span class="section-number-4">2.5.1</span> 基础算法</h4>
+<div class="outline-text-4" id="text-2-5-1">
+
+<p>    它的核心思想是通过隐含特征(latent factor)联系用户兴趣和物品
+</p>
+<p>
+    隐含语义分析技术采取基于用户行为统计的自动聚类
+</p></div>
+
+</div>
+
+<div id="outline-container-2-5-2" class="outline-4">
+<h4 id="sec-2-5-2"><span class="section-number-4">2.5.2</span> 基于LFM的实际系统的例子</h4>
+<div class="outline-text-4" id="text-2-5-2">
+
+<p>    雅虎首页个性化
+</p>
+<p>
+    LFM模型在实际使用中有一个困难，那就是它很难实现实时的推荐
+</p></div>
+
+</div>
+
+<div id="outline-container-2-5-3" class="outline-4">
+<h4 id="sec-2-5-3"><span class="section-number-4">2.5.3</span> LFM和基于邻域的方法的比较</h4>
+<div class="outline-text-4" id="text-2-5-3">
+
+<ol>
+<li>理论基础
+</li>
+<li>离线计算的空间复杂度
+</li>
+<li>离线计算的时间复杂度
+</li>
+<li>在线实时推荐
+</li>
+<li>推荐解释
+</li>
+</ol>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2-6" class="outline-3">
+<h3 id="sec-2-6"><span class="section-number-3">2.6</span> 基于图的模型</h3>
+<div class="outline-text-3" id="text-2-6">
+
+
+</div>
+
+<div id="outline-container-2-6-1" class="outline-4">
+<h4 id="sec-2-6-1"><span class="section-number-4">2.6.1</span> 用户行为数据的二分图表示</h4>
+<div class="outline-text-4" id="text-2-6-1">
+
+</div>
+
+</div>
+
+<div id="outline-container-2-6-2" class="outline-4">
+<h4 id="sec-2-6-2"><span class="section-number-4">2.6.2</span> 基于图的推荐算法</h4>
+<div class="outline-text-4" id="text-2-6-2">
+
+<p>    如果将个性化推荐算法放到二分图模型上，那么给用户u推荐物品的任务就可以转化为度量用户顶点V<sub>u</sub>和与V<sub>u</sub>没有边直接相连的物品节点在图上的相关性，
+    相关性越高的物品在推荐列表中的权重就越高
+</p>
+<p>
+    图中顶点的相关性主要取决于3个因素：
+</p><ol>
+<li>两个顶点之间的路径数
+</li>
+<li>两个顶点之间路径的长度
+</li>
+<li>两个顶点之间的路径经过的顶点
+</li>
+</ol>
+
+
+<p>
+    相关性高的一对顶点一般具有如下特征：
+</p><ol>
+<li>两个顶点之间有很多路径相连
+</li>
+<li>连接两个顶点之间的路径长度都比较短
+</li>
+<li>连接两个顶点之间的路径不会经过出度比较大的顶点
+</li>
+</ol>
+
+</div>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 第3章 推荐系统冷启动问题</h2>
+<div class="outline-text-2" id="text-3">
+
+<p>  冷启动问题：如何在没有大量用户数据的情况下设计个性化推荐系统并且让用户满意
+</p>
+</div>
+
+<div id="outline-container-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> 冷启动问题简介</h3>
+<div class="outline-text-3" id="text-3-1">
+
+<p>   主要分3类：
+</p><ol>
+<li>用户冷启动
+</li>
+<li>物品冷启动
+</li>
+<li>系统冷启动
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> 利用用户注册信息</h3>
+<div class="outline-text-3" id="text-3-2">
+
+<p>   用户的注册信息分3种：
+</p><ol>
+<li>人口统计学信息
+</li>
+<li>用户兴趣的描述
+</li>
+<li>从其他网站导入的用户站外行为数据
+</li>
+</ol>
+
+
+<p>
+   基于注册信息的个性化推荐流程：
+</p><ol>
+<li>获取用户的注册信息
+</li>
+<li>根据用户的注册信息对用户分类
+</li>
+<li>给用户推荐他所属分类中用户喜欢的物品
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> 选择合适的物品启动用户的兴趣</h3>
+<div class="outline-text-3" id="text-3-3">
+
+<p>   能够用来启动用户兴趣的物品有如下特点：
+</p><ol>
+<li>比较热门
+</li>
+<li>具有代表性和区分性
+</li>
+<li>启动物品集合需要有多样性
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-3-4" class="outline-3">
+<h3 id="sec-3-4"><span class="section-number-3">3.4</span> 利用物品的内容信息</h3>
+<div class="outline-text-3" id="text-3-4">
+
+<p>   物品的内容可以通过向量空间模型表示，该模型会将物品表示成一个关键词向量
+</p>
+<p>
+   如何建立文章、话题和关键词的关系是话题模型(topic model)研究的重点
+</p></div>
+
+</div>
+
+<div id="outline-container-3-5" class="outline-3">
+<h3 id="sec-3-5"><span class="section-number-3">3.5</span> 发挥专家的作用</h3>
+<div class="outline-text-3" id="text-3-5">
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> 第4章 利用用户标签数据</h2>
+<div class="outline-text-2" id="text-4">
+
+<p>  3种方式联系用户兴趣和物品：
+</p><ol>
+<li>利用用户喜欢过的物品
+</li>
+<li>利用和用户兴趣相似的其他用户
+</li>
+<li>通过一些特征(属性集合、隐语义向量、标签)联系用户和物品
+</li>
+</ol>
+
+
+</div>
+
+<div id="outline-container-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> UGC标签系统的代表应用</h3>
+<div class="outline-text-3" id="text-4-1">
+
+<p>   标签系统的最大优势在于可以发挥群体的智能，获得对物品内容信息比较准确的关键词描述
+</p>
+</div>
+
+<div id="outline-container-4-1-1" class="outline-4">
+<h4 id="sec-4-1-1"><span class="section-number-4">4.1.1</span> Delicious</h4>
+<div class="outline-text-4" id="text-4-1-1">
+
+</div>
+
+</div>
+
+<div id="outline-container-4-1-2" class="outline-4">
+<h4 id="sec-4-1-2"><span class="section-number-4">4.1.2</span> CiteULike</h4>
+<div class="outline-text-4" id="text-4-1-2">
+
+</div>
+
+</div>
+
+<div id="outline-container-4-1-3" class="outline-4">
+<h4 id="sec-4-1-3"><span class="section-number-4">4.1.3</span> Last.fm</h4>
+<div class="outline-text-4" id="text-4-1-3">
+
+</div>
+
+</div>
+
+<div id="outline-container-4-1-4" class="outline-4">
+<h4 id="sec-4-1-4"><span class="section-number-4">4.1.4</span> 豆瓣</h4>
+<div class="outline-text-4" id="text-4-1-4">
+
+</div>
+
+</div>
+
+<div id="outline-container-4-1-5" class="outline-4">
+<h4 id="sec-4-1-5"><span class="section-number-4">4.1.5</span> Hulu</h4>
+<div class="outline-text-4" id="text-4-1-5">
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> 标签系统中的推荐问题</h3>
+<div class="outline-text-3" id="text-4-2">
+
+<p>   主要有两个：
+</p><ol>
+<li>如何利用用户打标签的行为为其 <b>推荐物品</b> (基于标签的推荐)
+</li>
+<li>如何在用户给物品打标签时为其 <b>推荐适合该物品的标签</b> (标签推荐)
+</li>
+</ol>
+
+
+</div>
+
+<div id="outline-container-4-2-1" class="outline-4">
+<h4 id="sec-4-2-1"><span class="section-number-4">4.2.1</span> 用户为什么进行标注</h4>
+<div class="outline-text-4" id="text-4-2-1">
+
+</div>
+
+</div>
+
+<div id="outline-container-4-2-2" class="outline-4">
+<h4 id="sec-4-2-2"><span class="section-number-4">4.2.2</span> 用户如何打标签</h4>
+<div class="outline-text-4" id="text-4-2-2">
+
+</div>
+
+</div>
+
+<div id="outline-container-4-2-3" class="outline-4">
+<h4 id="sec-4-2-3"><span class="section-number-4">4.2.3</span> 用户打什么样的标签</h4>
+<div class="outline-text-4" id="text-4-2-3">
+
+<p>    Delicious的标签种类：
+</p><ol>
+<li>表明物品是什么
+</li>
+<li>表明物品的种类
+</li>
+<li>表明谁拥有物品
+</li>
+<li>表达用户的观点
+</li>
+<li>用户相关的标签
+</li>
+<li>用户的任务
+</li>
+</ol>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-4-3" class="outline-3">
+<h3 id="sec-4-3"><span class="section-number-3">4.3</span> 基于标签的推荐系统</h3>
+<div class="outline-text-3" id="text-4-3">
+
+
+</div>
+
+<div id="outline-container-4-3-1" class="outline-4">
+<h4 id="sec-4-3-1"><span class="section-number-4">4.3.1</span> 实验设置</h4>
+<div class="outline-text-4" id="text-4-3-1">
+
+</div>
+
+</div>
+
+<div id="outline-container-4-3-2" class="outline-4">
+<h4 id="sec-4-3-2"><span class="section-number-4">4.3.2</span> 一个最简单的算法</h4>
+<div class="outline-text-4" id="text-4-3-2">
+
+<ol>
+<li>统计每个用户最常用的标签
+</li>
+<li>对于每个标签，统计被打过这个标签次数最多的物品
+</li>
+<li>对于每一个用户，首先找到他常用的标签，然后找到具有这些标签的最热门物品推荐给这个用户
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-4-3-3" class="outline-4">
+<h4 id="sec-4-3-3"><span class="section-number-4">4.3.3</span> 算法的改进</h4>
+<div class="outline-text-4" id="text-4-3-3">
+
+<ul>
+<li id="sec-4-3-3-1">TF-IDF<br/>
+     适当惩罚热门标签和热门物品，在增进推荐结果个性化的同时并不会降低推荐结果的离线精度
+</li>
+</ul>
+<ul>
+<li id="sec-4-3-3-2">数据稀疏性<br/>
+     对标签集合做扩展
+
+<p>
+     标签扩展的本质是对每个标签找到和它相似的标签，也就是计算标签之间的相似度
+</p></li>
+</ul>
+<ul>
+<li id="sec-4-3-3-3">标签清理<br/>
+     标签清理的另一个重要意义在于将标签作为推荐解释
+
+<p>
+     对标签的质量要求：
+</p><ol>
+<li>标签不能包含没有意义的停止词或者表示情绪的词
+</li>
+<li>推荐解释里不能包含很多意义相同的词语
+</li>
+</ol>
+
+
+<p>
+     标签清理方法：
+</p><ol>
+<li>去除词频很高的停止词
+</li>
+<li>去除因词根不同造成的同义词
+</li>
+<li>去除因分隔符造成的同义词
+</li>
+</ol>
+
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-4-3-4" class="outline-4">
+<h4 id="sec-4-3-4"><span class="section-number-4">4.3.4</span> 基于图的推荐算法</h4>
+<div class="outline-text-4" id="text-4-3-4">
+
+</div>
+
+</div>
+
+<div id="outline-container-4-3-5" class="outline-4">
+<h4 id="sec-4-3-5"><span class="section-number-4">4.3.5</span> 基于标签的推荐解释</h4>
+<div class="outline-text-4" id="text-4-3-5">
+
+<p>    基于标签的最大好处是可以利用标签做推荐解释
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-4-4" class="outline-3">
+<h3 id="sec-4-4"><span class="section-number-3">4.4</span> 给用户推荐标签</h3>
+<div class="outline-text-3" id="text-4-4">
+
+
+</div>
+
+<div id="outline-container-4-4-1" class="outline-4">
+<h4 id="sec-4-4-1"><span class="section-number-4">4.4.1</span> 为什么要给用户推荐标签</h4>
+<div class="outline-text-4" id="text-4-4-1">
+
+<ol>
+<li>方便用户输入标签
+</li>
+<li>提高标签质量
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-4-4-2" class="outline-4">
+<h4 id="sec-4-4-2"><span class="section-number-4">4.4.2</span> 如何给用户推荐标签</h4>
+<div class="outline-text-4" id="text-4-4-2">
+
+<ol>
+<li>popular_tags
+</li>
+<li>item_popular_tags
+</li>
+<li>user_popular_tags
+</li>
+<li>hybrid_popular_tags
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-4-4-3" class="outline-4">
+<h4 id="sec-4-4-3"><span class="section-number-4">4.4.3</span> 实验设置</h4>
+<div class="outline-text-4" id="text-4-4-3">
+
+</div>
+
+</div>
+
+<div id="outline-container-4-4-4" class="outline-4">
+<h4 id="sec-4-4-4"><span class="section-number-4">4.4.4</span> 基于图的标签推荐算法</h4>
+<div class="outline-text-4" id="text-4-4-4">
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-4-5" class="outline-3">
+<h3 id="sec-4-5"><span class="section-number-3">4.5</span> 扩展阅读</h3>
+<div class="outline-text-3" id="text-4-5">
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> 第5章 利用上下文信息</h2>
+<div class="outline-text-2" id="text-5">
+
+
+</div>
+
+<div id="outline-container-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> 时间上下文信息</h3>
+<div class="outline-text-3" id="text-5-1">
+
+
+</div>
+
+<div id="outline-container-5-1-1" class="outline-4">
+<h4 id="sec-5-1-1"><span class="section-number-4">5.1.1</span> 时间效应简介</h4>
+<div class="outline-text-4" id="text-5-1-1">
+
+<ol>
+<li>用户兴趣是变化的
+</li>
+<li>物品也是有生命周期的
+</li>
+<li>季节效应
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-5-1-2" class="outline-4">
+<h4 id="sec-5-1-2"><span class="section-number-4">5.1.2</span> 时间效应举例</h4>
+<div class="outline-text-4" id="text-5-1-2">
+
+</div>
+
+</div>
+
+<div id="outline-container-5-1-3" class="outline-4">
+<h4 id="sec-5-1-3"><span class="section-number-4">5.1.3</span> 系统时间特性的分析</h4>
+<div class="outline-text-4" id="text-5-1-3">
+
+<p>    通过统计如下信息研究系统的时间特性：
+</p><ol>
+<li>每天独立用户数的增长情况
+</li>
+<li>系统的物品变化情况
+</li>
+<li>用户访问情况
+</li>
+</ol>
+
+<ul>
+<li id="sec-5-1-3-1">数据集的选择<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-5-1-3-2">物品的生存周期和系统的时效性<br/>
+<ol>
+<li>物品平均在线天数
+
+<p>
+        如果一个物品在某天被至少一个用户产生过行为，就定义该物品在这一天在线。因此可以通过物品的平均在线天数度量一类物品的生存周期
+</p></li>
+<li>相隔T天系统物品流行度向量的平均相似度
+</li>
+</ol>
+
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-5-1-4" class="outline-4">
+<h4 id="sec-5-1-4"><span class="section-number-4">5.1.4</span> 推荐系统的实时性</h4>
+<div class="outline-text-4" id="text-5-1-4">
+
+<p>    实现推荐系统的实时性除了对用户行为的存取有实时性要求，还要求推荐算法本身具有实时性
+</p></div>
+
+</div>
+
+<div id="outline-container-5-1-5" class="outline-4">
+<h4 id="sec-5-1-5"><span class="section-number-4">5.1.5</span> 推荐算法的时间多样性</h4>
+<div class="outline-text-4" id="text-5-1-5">
+
+<p>    时间多样性：推荐系统每天推荐结果的变化程度
+</p>
+<p>
+    如何在不损失精度的情况下提高推荐结果的时间多样性
+</p>
+<p>    
+    提高推荐结果的时间多样性需要分两步解决：
+</p><ol>
+<li>保证推荐系统能够在用户有了新的行为后及时调整推荐结果，使推荐结果满足用户最近的兴趣
+</li>
+<li>保证推荐系统在用户没有新的行为时也能够经常变化一下结果，具有一定的时间多样性
+</li>
+</ol>
+
+
+<p>
+    如果用户没有行为，保证给用户的推荐结果具有一定的时间多样性思路：
+</p><ol>
+<li>在生成推荐结果时加入一定的随机性
+</li>
+<li>记录用户每天看到的推荐结果，然后在每天给用户进行推荐时，对他前几天看到过很多次的推荐结果进行适当地降权
+</li>
+<li>每天给用户使用不同的推荐算法
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-5-1-6" class="outline-4">
+<h4 id="sec-5-1-6"><span class="section-number-4">5.1.6</span> 时间上下文推荐算法</h4>
+<div class="outline-text-4" id="text-5-1-6">
+
+<ol>
+<li>最近最热门
+</li>
+<li>时间上下文相关的ItemCF算法
+</li>
+<li>时间上下文相关的UserCF算法
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-5-1-7" class="outline-4">
+<h4 id="sec-5-1-7"><span class="section-number-4">5.1.7</span> 时间段图模型</h4>
+<div class="outline-text-4" id="text-5-1-7">
+
+</div>
+
+</div>
+
+<div id="outline-container-5-1-8" class="outline-4">
+<h4 id="sec-5-1-8"><span class="section-number-4">5.1.8</span> 离线实验</h4>
+<div class="outline-text-4" id="text-5-1-8">
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-5-2" class="outline-3">
+<h3 id="sec-5-2"><span class="section-number-3">5.2</span> 地点上下文信息</h3>
+<div class="outline-text-3" id="text-5-2">
+
+</div>
+
+</div>
+
+<div id="outline-container-5-3" class="outline-3">
+<h3 id="sec-5-3"><span class="section-number-3">5.3</span> 扩展阅读</h3>
+<div class="outline-text-3" id="text-5-3">
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> 第6章 利用社交网络数据</h2>
+<div class="outline-text-2" id="text-6">
+
+
+</div>
+
+<div id="outline-container-6-1" class="outline-3">
+<h3 id="sec-6-1"><span class="section-number-3">6.1</span> 获取社交网络数据的途径</h3>
+<div class="outline-text-3" id="text-6-1">
+
+
+</div>
+
+<div id="outline-container-6-1-1" class="outline-4">
+<h4 id="sec-6-1-1"><span class="section-number-4">6.1.1</span> 电子邮件</h4>
+<div class="outline-text-4" id="text-6-1-1">
+
+</div>
+
+</div>
+
+<div id="outline-container-6-1-2" class="outline-4">
+<h4 id="sec-6-1-2"><span class="section-number-4">6.1.2</span> 用户注册信息</h4>
+<div class="outline-text-4" id="text-6-1-2">
+
+</div>
+
+</div>
+
+<div id="outline-container-6-1-3" class="outline-4">
+<h4 id="sec-6-1-3"><span class="section-number-4">6.1.3</span> 用户的位置数据</h4>
+<div class="outline-text-4" id="text-6-1-3">
+
+</div>
+
+</div>
+
+<div id="outline-container-6-1-4" class="outline-4">
+<h4 id="sec-6-1-4"><span class="section-number-4">6.1.4</span> 论坛和讨论组</h4>
+<div class="outline-text-4" id="text-6-1-4">
+
+</div>
+
+</div>
+
+<div id="outline-container-6-1-5" class="outline-4">
+<h4 id="sec-6-1-5"><span class="section-number-4">6.1.5</span> 即使聊天工具</h4>
+<div class="outline-text-4" id="text-6-1-5">
+
+</div>
+
+</div>
+
+<div id="outline-container-6-1-6" class="outline-4">
+<h4 id="sec-6-1-6"><span class="section-number-4">6.1.6</span> 社交网站</h4>
+<div class="outline-text-4" id="text-6-1-6">
+
+<p>    社交网站的另一个好处是自然地减轻了信息过载问题
+</p>
+<p>
+    社交图谱(Facebook) 兴趣图谱(twitter)
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-6-2" class="outline-3">
+<h3 id="sec-6-2"><span class="section-number-3">6.2</span> 社交网络数据简介</h3>
+<div class="outline-text-3" id="text-6-2">
+
+
+<p class="verse">
+在Facebook这种社交网络上可以用 <b>无向边</b> 连接有社交网络关系的用户<br/>
+在twitter上可以用 <b>有向边</b> 代表社交网络上的用户关系<br/>
+</p>
+
+
+<p>
+   3种不同的社交网络数据：
+</p><ol>
+<li>双向确认的社交网络数据
+</li>
+<li>单向关注的社交网络数据
+</li>
+<li>基于社区的社交网络数据
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-6-3" class="outline-3">
+<h3 id="sec-6-3"><span class="section-number-3">6.3</span> 基于社交网络的推荐</h3>
+<div class="outline-text-3" id="text-6-3">
+
+<p>   社会化推荐优点：
+</p><ol>
+<li>好友推荐可以增加推荐的信任度
+</li>
+<li>社交网络可以解决冷启动问题
+</li>
+</ol>
+
+
+<p>
+   缺点：很多时候并不一定能提高推荐算法的离线精度(准确率和召回率)
+</p>
+</div>
+
+<div id="outline-container-6-3-1" class="outline-4">
+<h4 id="sec-6-3-1"><span class="section-number-4">6.3.1</span> 基于邻域的社会化推荐算法</h4>
+<div class="outline-text-4" id="text-6-3-1">
+
+<p>    最简单的算法是给用户推荐好友喜欢的物品集合
+</p>
+<p>
+    熟悉度可以用用户之间的共同好友比例来度量
+</p></div>
+
+</div>
+
+<div id="outline-container-6-3-2" class="outline-4">
+<h4 id="sec-6-3-2"><span class="section-number-4">6.3.2</span> 基于图的社会化推荐算法</h4>
+<div class="outline-text-4" id="text-6-3-2">
+
+</div>
+
+</div>
+
+<div id="outline-container-6-3-3" class="outline-4">
+<h4 id="sec-6-3-3"><span class="section-number-4">6.3.3</span> 实际系统中的社会化推荐算法</h4>
+<div class="outline-text-4" id="text-6-3-3">
+
+</div>
+
+</div>
+
+<div id="outline-container-6-3-4" class="outline-4">
+<h4 id="sec-6-3-4"><span class="section-number-4">6.3.4</span> 社会化推荐系统和协同过滤推荐系统</h4>
+<div class="outline-text-4" id="text-6-3-4">
+
+<p>    社会化推荐的优势不在于增加预测准确度，而是在于通过用户的好友增加用户对推荐结果的信任度，从而让用户单击那些很冷门的推荐结果
+</p></div>
+
+</div>
+
+<div id="outline-container-6-3-5" class="outline-4">
+<h4 id="sec-6-3-5"><span class="section-number-4">6.3.5</span> 信息流推荐</h4>
+<div class="outline-text-4" id="text-6-3-5">
+
+<p>    信息流的个性化推荐要解决的问题就是如何进一步帮助用户从信息墙上挑选有用的信息
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-6-4" class="outline-3">
+<h3 id="sec-6-4"><span class="section-number-3">6.4</span> 给用户推荐好友</h3>
+<div class="outline-text-3" id="text-6-4">
+
+<p>   好友推荐系统的目的是根据用户现有的好友、用户的行为记录给用户推荐新的好友，从而增加整个社交网络的稠密程度和社交网站用户的活跃度
+</p>
+</div>
+
+<div id="outline-container-6-4-1" class="outline-4">
+<h4 id="sec-6-4-1"><span class="section-number-4">6.4.1</span> 基于内容的匹配</h4>
+<div class="outline-text-4" id="text-6-4-1">
+
+<ol>
+<li>用户人口统计学属性
+</li>
+<li>用户的兴趣
+</li>
+<li>用户的位置信息
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-6-4-2" class="outline-4">
+<h4 id="sec-6-4-2"><span class="section-number-4">6.4.2</span> 基于共同兴趣的好友推荐</h4>
+<div class="outline-text-4" id="text-6-4-2">
+
+</div>
+
+</div>
+
+<div id="outline-container-6-4-3" class="outline-4">
+<h4 id="sec-6-4-3"><span class="section-number-4">6.4.3</span> 基于社交网络图的好友推荐</h4>
+<div class="outline-text-4" id="text-6-4-3">
+
+
+<p class="verse">
+w<sub>out</sub><br/>
+w<sub>in</sub><br/>
+w<sub>out,in</sub><br/>
+w'<sub>out, in</sub><br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-6-4-4" class="outline-4">
+<h4 id="sec-6-4-4"><span class="section-number-4">6.4.4</span> 基于用户调查的好友推荐算法对比</h4>
+<div class="outline-text-4" id="text-6-4-4">
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-6-5" class="outline-3">
+<h3 id="sec-6-5"><span class="section-number-3">6.5</span> 扩展阅读</h3>
+<div class="outline-text-3" id="text-6-5">
+
+<p>   <b>六度原理</b>
+</p>
+<p>
+   很多对社交网络的研究都是基于 <b>随机图理论</b> 的
+</p>
+<p>
+   社交网络研究中两个最著名的问题：
+</p><ol>
+<li>如何度量人的重要性，即社交网络顶点的中心度
+</li>
+<li>如何度量社交网络中人和人之间的关系，即链接预测
+</li>
+</ol>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> 第7章 推荐系统实例</h2>
+<div class="outline-text-2" id="text-7">
+
+
+</div>
+
+<div id="outline-container-7-1" class="outline-3">
+<h3 id="sec-7-1"><span class="section-number-3">7.1</span> 外围架构</h3>
+<div class="outline-text-3" id="text-7-1">
+
+<p>   如何存取用户行为数据是推荐系统需要解决的首要问题
+</p>
+<p>
+   需要实时存取的数据存储在数据库和缓存中，而大规模的非实时地存取数据存储在分布式文件系统中
+</p></div>
+
+</div>
+
+<div id="outline-container-7-2" class="outline-3">
+<h3 id="sec-7-2"><span class="section-number-3">7.2</span> 推荐系统架构</h3>
+<div class="outline-text-3" id="text-7-2">
+
+<p>   基于特征的推荐系统架构的核心任务有两部分：
+</p><ol>
+<li>如何为给定用户生成特征
+</li>
+<li>如何根据特征找到物品
+</li>
+</ol>
+
+
+<p>
+   特征种类：
+</p><ol>
+<li>人口统计学特征
+</li>
+<li>用户的行为特征
+</li>
+<li>用户的话题特征
+</li>
+</ol>
+
+
+<p>
+   如果把各种特征和任务都统筹考虑，则推荐系统将会非常复杂，而且很难通过配置文件方便地配置不同特征和任务的权重。
+   因此，推荐系统需要由多个推荐引擎组成，每个推荐引擎负责一类特征和一种任务，而推荐系统的任务只是将推荐引擎的结果按照一定权重或者优先级合并、排序然后返回
+</p>
+<p>
+   使用推荐引擎的好处：
+</p><ol>
+<li>可以方便地增加/删除引擎，控制不同引擎对推荐结果的影响
+</li>
+<li>可以实现推荐引擎级别的用户反馈
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-7-3" class="outline-3">
+<h3 id="sec-7-3"><span class="section-number-3">7.3</span> 推荐引擎的架构</h3>
+<div class="outline-text-3" id="text-7-3">
+
+
+</div>
+
+<div id="outline-container-7-3-1" class="outline-4">
+<h4 id="sec-7-3-1"><span class="section-number-4">7.3.1</span> 生成用户特征向量</h4>
+<div class="outline-text-4" id="text-7-3-1">
+
+<p>    一个特征向量由特征以及特征的权重组成，在利用用户行为计算特征向量时需要考虑以下因素：
+</p><ol>
+<li>用户行为的种类
+       一般的标准就是用户付出代价越大的行为权重越高
+</li>
+<li>用户行为产生的时间
+</li>
+<li>用户行为的次数
+</li>
+<li>物品的热门程度
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-7-3-2" class="outline-4">
+<h4 id="sec-7-3-2"><span class="section-number-4">7.3.2</span> 特征-物品相关推荐</h4>
+<div class="outline-text-4" id="text-7-3-2">
+
+</div>
+
+</div>
+
+<div id="outline-container-7-3-3" class="outline-4">
+<h4 id="sec-7-3-3"><span class="section-number-4">7.3.3</span> 过滤模块</h4>
+<div class="outline-text-4" id="text-7-3-3">
+
+<ol>
+<li>用户已经产生过行为的物品
+</li>
+<li>候选物品以外的物品
+</li>
+<li>某些质量很差的物品
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-7-3-4" class="outline-4">
+<h4 id="sec-7-3-4"><span class="section-number-4">7.3.4</span> 排名模块</h4>
+<div class="outline-text-4" id="text-7-3-4">
+
+<ul>
+<li id="sec-7-3-4-1">新颖性排名<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-7-3-4-2">多样性<br/>
+     提高多样性的方法：
+<ol>
+<li>将推荐结果按照某种物品的内容属性分成几类，然后在某个类中都选择该类中排名最高的物品组合成最终的推荐列表
+</li>
+<li>让推荐结果尽量来自不同的特征，具有不同的推荐理由，而不是所有的推荐结果都对应一个理由
+</li>
+</ol>
+
+</li>
+</ul>
+<ul>
+<li id="sec-7-3-4-3">时间多样性<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-7-3-4-4">用户反馈<br/>
+     是排名模块最重要的部分
+</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-7-4" class="outline-3">
+<h3 id="sec-7-4"><span class="section-number-3">7.4</span> 扩展阅读</h3>
+<div class="outline-text-3" id="text-7-4">
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> 第8章 评分预测问题</h2>
+<div class="outline-text-2" id="text-8">
+
+<p>  评分预测问题就是如何通过已知的用户历史评分记录预测未知的用户评分记录
+</p>
+</div>
+
+<div id="outline-container-8-1" class="outline-3">
+<h3 id="sec-8-1"><span class="section-number-3">8.1</span> 离线实验方法</h3>
+<div class="outline-text-3" id="text-8-1">
+
+</div>
+
+</div>
+
+<div id="outline-container-8-2" class="outline-3">
+<h3 id="sec-8-2"><span class="section-number-3">8.2</span> 评分预测算法</h3>
+<div class="outline-text-3" id="text-8-2">
+
+
+</div>
+
+<div id="outline-container-8-2-1" class="outline-4">
+<h4 id="sec-8-2-1"><span class="section-number-4">8.2.1</span> 平均值</h4>
+<div class="outline-text-4" id="text-8-2-1">
+
+<ul>
+<li id="sec-8-2-1-1">全局平均值<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-8-2-1-2">用户评分平均值<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-8-2-1-3">物品评分平均值<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-8-2-1-4">用户分类对物品分类的平均值<br/>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-8-2-2" class="outline-4">
+<h4 id="sec-8-2-2"><span class="section-number-4">8.2.2</span> 基于邻域的方法</h4>
+<div class="outline-text-4" id="text-8-2-2">
+
+</div>
+
+</div>
+
+<div id="outline-container-8-2-3" class="outline-4">
+<h4 id="sec-8-2-3"><span class="section-number-4">8.2.3</span> 隐语义模型与矩阵分解模型</h4>
+<div class="outline-text-4" id="text-8-2-3">
+
+<p>    在推荐系统邻域，提的最多的就是隐语义模型和矩阵分解模型。其实，这两个名词说的是一回事，就是如何通过降维的方法将评分矩阵补全
+</p><ul>
+<li id="sec-8-2-3-1">传统的SVD分解<br/>
+     对矩阵扰动最小：如果补全后矩阵的特征值和补全之前矩阵的特征值相差不大，就算是扰动比较小
+
+<p>
+     最早的矩阵分解模型就是从数学上的SVD(奇异值分解)开始的
+</p></li>
+</ul>
+<ul>
+<li id="sec-8-2-3-2">Simon Funk的SVD分解<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-8-2-3-3">加入偏置项后的LFM<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-8-2-3-4">考虑邻域影响的LFM<br/>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-8-2-4" class="outline-4">
+<h4 id="sec-8-2-4"><span class="section-number-4">8.2.4</span> 加入时间信息</h4>
+<div class="outline-text-4" id="text-8-2-4">
+
+<ul>
+<li id="sec-8-2-4-1">基于邻域的模型融合时间信息<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-8-2-4-2">基于矩阵分解的模型融合时间信息<br/>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-8-2-5" class="outline-4">
+<h4 id="sec-8-2-5"><span class="section-number-4">8.2.5</span> 模型融合</h4>
+<div class="outline-text-4" id="text-8-2-5">
+
+<ul>
+<li id="sec-8-2-5-1">模型级联融合<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-8-2-5-2">模型加权融合<br/>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-8-2-6" class="outline-4">
+<h4 id="sec-8-2-6"><span class="section-number-4">8.2.6</span> Netflix Prize的相关实验结果</h4>
+<div class="outline-text-4" id="text-8-2-6">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2013-01-31 20:40:18 CST</p>
+<p class="author">Author: wyj</p>
+<p class="creator">Org version 7.8.11 with Emacs version 24</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>

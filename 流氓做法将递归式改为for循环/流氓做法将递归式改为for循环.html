@@ -1,0 +1,687 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>递归、尾递归、非递归</title>
+<meta http-equiv="Content-Type" content="text/html;charset=gbk"/>
+<meta name="title" content="递归、尾递归、非递归"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-09-21 08:48:49 中国标准时间"/>
+<meta name="author" content="wyj"/>
+<meta name="description" content=""/>
+<meta name="keywords" content="算法, notes"/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="./style/style.css" />
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">递归、尾递归、非递归</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 流氓做法直接将递归式改为for循环</a>
+<ul>
+<li><a href="#sec-1-1">1.1 步骤</a></li>
+<li><a href="#sec-1-2">1.2 例子1</a></li>
+<li><a href="#sec-1-3">1.3 例子2</a></li>
+<li><a href="#sec-1-4">1.4 例子3</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2 递归转尾递归转循环</a>
+<ul>
+<li><a href="#sec-2-1">2.1 步骤</a></li>
+<li><a href="#sec-2-2">2.2 例子</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3 二叉树非递归遍历</a>
+<ul>
+<li><a href="#sec-3-1">3.1 参考内容</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4 参考内容</a>
+<ul>
+<li><a href="#sec-4-1">4.1 http://bbs.bccn.net/thread-175695-1-1.html</a></li>
+<li><a href="#sec-4-2">4.2 http://zh.wikipedia.org/zh-cn/尾部递归</a></li>
+<li><a href="#sec-4-3">4.3 http://blog.zhaojie.me/2009/03/tail-recursion-and-continuation.html</a></li>
+<li><a href="#sec-4-4">4.4 http://bbs.chinaunix.net/forum.php?mod=viewthread&amp;tid=331522</a></li>
+<li><a href="#sec-4-5">4.5 http://mingliangfeng.iteye.com/blog/201084</a></li>
+</ul>
+</li>
+<li><a href="#sec-5">5 参考资料</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 流氓做法直接将递归式改为for循环</h2>
+<div class="outline-text-2" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> 步骤</h3>
+<div class="outline-text-3" id="text-1-1">
+
+<ol>
+<li>将函数表示为result，边界条件的返回值就是result的初值
+</li>
+<li>边界条件稍作改动成为for循环的判断条件
+</li>
+<li>界函数作为for循环的变量改变部分
+</li>
+<li>循环体内就是递归式
+</li>
+<li>返回result
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> 例子1</h3>
+<div class="outline-text-3" id="text-1-2">
+
+
+
+
+<pre class="src src-C"><span style="color: #ad7fa8;">int</span> <span style="color: #c4a000;">f_recursive</span>(<span style="color: #ad7fa8;">int</span> m, <span style="color: #ad7fa8;">int</span> n)
+{
+    <span style="color: #729fcf;">if</span> (m == 0 &amp;&amp; n &gt;= 0) 
+        <span style="color: #729fcf;">return</span> 0;
+    <span style="color: #729fcf;">return</span> (f_recursive(m - 1, 2*n) + n);
+}
+</pre>
+
+
+<pre class="src src-C"><span style="color: #ad7fa8;">int</span> <span style="color: #c4a000;">f_no_recursive</span>(<span style="color: #ad7fa8;">int</span> m, <span style="color: #ad7fa8;">int</span> n)
+{
+    <span style="color: #ad7fa8;">int</span> result = 0;
+    <span style="color: #729fcf;">for</span> (; m != 0 &amp;&amp; n &gt;= 0; --m, n *= 2)
+    {
+        result += n;
+    }
+    <span style="color: #729fcf;">return</span> result;
+}
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> 例子2</h3>
+<div class="outline-text-3" id="text-1-3">
+
+
+
+
+<pre class="src src-C"><span style="color: #ad7fa8;">int</span> <span style="color: #c4a000;">f_recursive</span>(<span style="color: #ad7fa8;">int</span> n)
+{
+    <span style="color: #729fcf;">if</span> (n == 0) 
+        <span style="color: #729fcf;">return</span> 1;
+    <span style="color: #729fcf;">return</span> (n * f_recursive(n/2));
+}
+</pre>
+
+
+<pre class="src src-C"><span style="color: #ad7fa8;">int</span> <span style="color: #c4a000;">f_no_recursive</span>(<span style="color: #ad7fa8;">int</span> n)
+{
+    <span style="color: #ad7fa8;">int</span> result = 1;
+    <span style="color: #729fcf;">for</span> (; n != 0; n /= 2)
+    {
+        result *= n;
+    }
+    <span style="color: #729fcf;">return</span> result;
+}
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-4" class="outline-3">
+<h3 id="sec-1-4"><span class="section-number-3">1.4</span> 例子3</h3>
+<div class="outline-text-3" id="text-1-4">
+
+
+
+
+<pre class="src src-C"><span style="color: #ad7fa8;">int</span> <span style="color: #c4a000;">factorial_recursive</span>(<span style="color: #ad7fa8;">int</span> n)
+{
+    <span style="color: #729fcf;">if</span> (n == 0)    <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#36793;&#30028;&#26465;&#20214;</span>
+    {
+        <span style="color: #729fcf;">return</span> 1;
+    }
+    <span style="color: #729fcf;">return</span> factorial_recursive(n-1<span style="color: #61635e;">/*</span><span style="color: #6A6F63;">&#30028;&#20989;&#25968;</span><span style="color: #61635e;">*/</span>) * n;    <span style="color: #61635e;">//</span><span style="color: #6A6F63;">f*n&#26159;&#36882;&#24402;&#24335;</span>
+}
+</pre>
+
+
+<pre class="src src-C"><span style="color: #ad7fa8;">int</span> <span style="color: #c4a000;">factorial_no_recursive</span>(<span style="color: #ad7fa8;">int</span> n)
+{
+    <span style="color: #ad7fa8;">int</span> result = 1;
+    <span style="color: #729fcf;">for</span> (; n != 0; --n)
+    {
+        result *= n;
+    }
+    <span style="color: #729fcf;">return</span> result;
+}
+</pre>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 递归转尾递归转循环</h2>
+<div class="outline-text-2" id="text-2">
+
+
+</div>
+
+<div id="outline-container-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 步骤</h3>
+<div class="outline-text-3" id="text-2-1">
+
+</div>
+
+</div>
+
+<div id="outline-container-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> 例子</h3>
+<div class="outline-text-3" id="text-2-2">
+
+<ul>
+<li id="sec-2-2-1">Factorial<br/>
+
+
+
+<pre class="src src-C"><span style="color: #ad7fa8;">int</span> <span style="color: #c4a000;">factorial_recursive</span>(<span style="color: #ad7fa8;">int</span> n)
+{
+    <span style="color: #729fcf;">if</span> (n == 0)    <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#36793;&#30028;&#26465;&#20214;</span>
+    {
+        <span style="color: #729fcf;">return</span> 1;
+    }
+    <span style="color: #729fcf;">return</span> factorial_recursive(n-1<span style="color: #61635e;">/*</span><span style="color: #6A6F63;">&#30028;&#20989;&#25968;</span><span style="color: #61635e;">*/</span>) * n;    <span style="color: #61635e;">//</span><span style="color: #6A6F63;">f*n&#26159;&#36882;&#24402;&#24335;</span>
+}
+</pre>
+
+
+
+<pre class="src src-C"><span style="color: #ad7fa8;">int</span> <span style="color: #c4a000;">factorial_tail_recursive</span>(<span style="color: #ad7fa8;">int</span> n, <span style="color: #ad7fa8;">int</span> acc)    <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#29992;acc&#34920;&#31034;f&#30340;&#36820;&#22238;&#32467;&#26524;</span>
+{
+    <span style="color: #729fcf;">if</span> (n == 0)
+    {
+        <span style="color: #729fcf;">return</span> acc;
+    }
+    <span style="color: #729fcf;">return</span> factorial_tail_recursive(n-1<span style="color: #61635e;">/*</span><span style="color: #6A6F63;">&#30028;&#20989;&#25968;</span><span style="color: #61635e;">*/</span>, acc*n);    <span style="color: #61635e;">//</span><span style="color: #6A6F63;">acc*n &#36882;&#24402;&#24335;</span>
+}
+</pre>
+
+
+
+<pre class="src src-C"><span style="color: #ad7fa8;">int</span> <span style="color: #c4a000;">factorial_loop</span>(<span style="color: #ad7fa8;">int</span> n, <span style="color: #ad7fa8;">int</span> acc)
+{
+    <span style="color: #729fcf;">while</span> (<span style="color: #4e9a06;">true</span>)
+    {
+        <span style="color: #729fcf;">if</span> (n == 0)
+        {
+            <span style="color: #729fcf;">return</span> acc;
+        }
+        acc *= n;
+        --n;
+    }
+}
+</pre>
+
+
+</li>
+</ul>
+<ul>
+<li id="sec-2-2-2">Fibonacci<br/>
+
+
+
+<pre class="src src-C"><span style="color: #ad7fa8;">int</span> <span style="color: #c4a000;">fibonacci_recursive</span>(<span style="color: #ad7fa8;">int</span> n)
+{
+    <span style="color: #729fcf;">if</span> (n &lt; 2)    <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#36882;&#24402;&#20986;&#21475;</span>
+    {
+        <span style="color: #729fcf;">return</span> n;
+    }
+    <span style="color: #729fcf;">return</span> fibonacci_recursive(n-1) + fibonacci_recursive(n-2);
+}
+</pre>
+
+
+
+<pre class="src src-C"><span style="color: #ad7fa8;">int</span> <span style="color: #c4a000;">fibonacci_tail_recursive</span>(<span style="color: #ad7fa8;">int</span> n, <span style="color: #ad7fa8;">int</span> acc1, <span style="color: #ad7fa8;">int</span> acc2)
+{
+    <span style="color: #729fcf;">if</span> (n == 0)
+    {
+        <span style="color: #729fcf;">return</span> acc1;
+    }
+    <span style="color: #729fcf;">return</span> fibonacci_tail_recursive(n-1, acc2, acc1+acc2);
+}
+</pre>
+
+
+
+<pre class="src src-C"><span style="color: #ad7fa8;">int</span> <span style="color: #c4a000;">fibonacci_loop</span>(<span style="color: #ad7fa8;">int</span> n, <span style="color: #ad7fa8;">int</span> acc1, <span style="color: #ad7fa8;">int</span> acc2)
+{
+    <span style="color: #729fcf;">while</span> (<span style="color: #4e9a06;">true</span>)
+    {
+        <span style="color: #729fcf;">if</span> (n == 0)
+        {
+            <span style="color: #729fcf;">return</span> acc1;
+        }
+        <span style="color: #ad7fa8;">int</span> temp = acc1;
+        acc1 = acc2;
+        acc2 = temp + acc2;
+        --n;
+    }
+}
+</pre>
+
+</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 二叉树非递归遍历</h2>
+<div class="outline-text-2" id="text-3">
+
+
+</div>
+
+<div id="outline-container-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> 参考内容</h3>
+<div class="outline-text-3" id="text-3-1">
+
+<ul>
+<li id="sec-3-1-1"><a href="http://www.cnblogs.com/dolphin0520/archive/2011/08/25/2153720.html">http://www.cnblogs.com/dolphin0520/archive/2011/08/25/2153720.html</a><br/>
+<ul>
+<li id="sec-3-1-1-1">前序非递归<br/>
+根据前序遍历访问的顺序，优先访问根结点，然后再分别访问左孩子和右孩子。
+即对于任一结点，其可看做是根结点，因此可以直接访问，访问完之后，若其左孩子不为空，按相同规则访问它的左子树；
+当访问完左子树时，再访问它的右子树。因此其处理过程如下：
+     对于任一结点P：
+<ol>
+<li>访问结点P，并将结点P入栈;
+</li>
+<li>判断结点P的左孩子是否为空，若为空，则取栈顶结点并进行出栈操作，并将栈顶结点的右孩子置为当前的结点P，循环至1);
+                              若不为空，则将P的左孩子置为当前的结点P;
+</li>
+<li>直到P为NULL并且栈为空，则遍历结束。
+</li>
+</ol>
+
+
+
+
+<pre class="src src-c++"><span style="color: #729fcf;">template</span> &lt;<span style="color: #729fcf;">typename</span> <span style="color: #ad7fa8;">T</span>, <span style="color: #729fcf;">typename</span> <span style="color: #ad7fa8;">VisitFun</span>&gt;    <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#35980;&#20284;&#36825;&#20010;&#29256;&#26412;&#27491;&#35268;&#20123;</span>
+<span style="color: #ad7fa8;">void</span> <span style="color: #c4a000;">pre_order_visit_no_recursive2</span>(<span style="color: #ad7fa8;">TreeNode</span>&lt;<span style="color: #ad7fa8;">T</span>&gt;* p_tree, <span style="color: #ad7fa8;">VisitFun</span> visitFun)
+{
+    <span style="color: #ad7fa8;">stack</span>&lt;<span style="color: #ad7fa8;">TreeNode</span>&lt;<span style="color: #ad7fa8;">T</span>&gt;*&gt; node_stack;
+
+    <span style="color: #729fcf;">while</span> (p_tree != <span style="color: #4e9a06;">NULL</span> || !node_stack.empty())    <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#30452;&#21040;p_tree&#20026;NULL&#24182;&#19988;&#26632;&#20026;&#31354;&#65292;&#21017;&#36941;&#21382;&#32467;&#26463;</span>
+    {
+        <span style="color: #729fcf;">while</span> (p_tree != <span style="color: #4e9a06;">NULL</span>)
+        {
+            visitFun(p_tree-&gt;value);    <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#35775;&#38382;&#32467;&#28857;p_tree&#65292;</span>
+            node_stack.push(p_tree);    <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#24182;&#23558;&#32467;&#28857;p_tree&#20837;&#26632;;</span>
+            p_tree = p_tree-&gt;left;      <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#33509;&#19981;&#20026;&#31354;&#65292;&#21017;&#23558;p_tree&#30340;&#24038;&#23401;&#23376;&#32622;&#20026;&#24403;&#21069;&#30340;&#32467;&#28857;p_tree</span>
+        }
+        <span style="color: #729fcf;">if</span> (!node_stack.empty())
+        {
+            p_tree = node_stack.top();    <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#21028;&#26029;&#32467;&#28857;p_tree&#30340;&#24038;&#23401;&#23376;&#26159;&#21542;&#20026;&#31354;&#65292;&#33509;&#20026;&#31354;&#65292;&#21017;&#21462;&#26632;&#39030;&#32467;&#28857;</span>
+            node_stack.pop();             <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#24182;&#36827;&#34892;&#20986;&#26632;&#25805;&#20316;&#65292;</span>
+            p_tree = p_tree-&gt;right;       <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#24182;&#23558;&#26632;&#39030;&#32467;&#28857;&#30340;&#21491;&#23401;&#23376;&#32622;&#20026;&#24403;&#21069;&#30340;&#32467;&#28857;p_tree&#65292;&#24490;&#29615;&#33267;1)</span>
+        }
+    }
+}
+
+</pre>
+
+</li>
+</ul>
+<ul>
+<li id="sec-3-1-1-2">中序非递归<br/>
+根据中序遍历的顺序，对于任一结点，优先访问其左孩子，
+而左孩子结点又可以看做一根结点，然后继续访问其左孩子结点， <b>直到遇到左孩子结点为空的结点才进行访问</b> ，
+然后按相同的规则访问其右子树。因此其处理过程如下：
+   对于任一结点P：
+<ol>
+<li>若其左孩子不为空，则将P入栈并将P的左孩子置为当前的P，然后对当前结点P再进行相同的处理；
+</li>
+<li>若其左孩子为空，则取栈顶元素并进行出栈操作，访问该栈顶结点，然后将当前的P置为栈顶结点的右孩子；
+</li>
+<li>直到P为NULL并且栈为空则遍历结束
+</li>
+</ol>
+
+
+
+
+<pre class="src src-c++"><span style="color: #729fcf;">template</span> &lt;<span style="color: #729fcf;">typename</span> <span style="color: #ad7fa8;">T</span>, <span style="color: #729fcf;">typename</span> <span style="color: #ad7fa8;">VisitFun</span>&gt;
+<span style="color: #ad7fa8;">void</span> <span style="color: #c4a000;">in_order_visit_no_recursive</span>(<span style="color: #ad7fa8;">TreeNode</span>&lt;<span style="color: #ad7fa8;">T</span>&gt;* p_tree, <span style="color: #ad7fa8;">VisitFun</span> visitFun)
+{
+    <span style="color: #ad7fa8;">stack</span>&lt;<span style="color: #ad7fa8;">TreeNode</span>&lt;<span style="color: #ad7fa8;">T</span>&gt;*&gt; node_stack;
+    <span style="color: #729fcf;">while</span> (p_tree != <span style="color: #4e9a06;">NULL</span> || !node_stack.empty())    <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#30452;&#21040;p_tree&#20026;NULL&#24182;&#19988;&#26632;&#20026;&#31354;&#21017;&#36941;&#21382;&#32467;&#26463;</span>
+    {
+        <span style="color: #729fcf;">while</span> (p_tree != <span style="color: #4e9a06;">NULL</span>)
+        {
+            node_stack.push(p_tree);    <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#33509;&#20854;&#24038;&#23401;&#23376;&#19981;&#20026;&#31354;&#65292;&#21017;&#23558;p_tree&#20837;&#26632;</span>
+            p_tree = p_tree-&gt;left;      <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#24182;&#23558;p_tree&#30340;&#24038;&#23401;&#23376;&#32622;&#20026;&#24403;&#21069;&#30340;p_tree&#65292;&#28982;&#21518;&#23545;&#24403;&#21069;&#32467;&#28857;p_tree&#20877;&#36827;&#34892;&#30456;&#21516;&#30340;&#22788;&#29702;</span>
+        }
+        <span style="color: #729fcf;">if</span> (!node_stack.empty())
+        {
+            p_tree = node_stack.top();    <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#33509;&#20854;&#24038;&#23401;&#23376;&#20026;&#31354;&#65292;&#21017;&#21462;&#26632;&#39030;&#20803;&#32032;&#24182;&#36827;&#34892;&#20986;&#26632;&#25805;&#20316;&#65292;</span>
+            node_stack.pop();
+            visitFun(p_tree-&gt;value);      <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#35775;&#38382;&#35813;&#26632;&#39030;&#32467;&#28857;&#65292;</span>
+            p_tree = p_tree-&gt;right;       <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#28982;&#21518;&#23558;&#24403;&#21069;&#30340;p_tree&#32622;&#20026;&#26632;&#39030;&#32467;&#28857;&#30340;&#21491;&#23401;&#23376;</span>
+        }
+    }
+}
+
+</pre>
+
+</li>
+</ul>
+<ul>
+<li id="sec-3-1-1-3">后续非递归<br/>
+
+<ul>
+<li id="sec-3-1-1-3-1">第一种思路<br/>
+对于任一结点P，将其入栈，然后沿其左子树一直往下搜索，直到搜索到没有左孩子的结点，此时该结点出现在栈顶，但是此时不能将其出栈并访问，因为其右孩子还未被访问。
+所以接下来按照相同的规则对其右子树进行相同的处理，当访问完其右孩子时，该结点又出现在栈顶，此时可以将其出栈并访问。这样就保证了正确的访问顺序。
+可以看出，在这个过程中，每个结点都两次出现在栈顶，只有在第二次出现在栈顶时，才能访问它。
+因此需要多设置一个变量标识该结点是否是第一次出现在栈顶。 
+
+
+
+<pre class="src src-c++"><span style="color: #729fcf;">template</span> &lt;<span style="color: #729fcf;">typename</span> <span style="color: #ad7fa8;">T</span>, <span style="color: #729fcf;">typename</span> <span style="color: #ad7fa8;">VisitFun</span>&gt;
+<span style="color: #ad7fa8;">void</span> <span style="color: #c4a000;">post_order_visit_no_recursive</span>(<span style="color: #ad7fa8;">TreeNode</span>&lt;<span style="color: #ad7fa8;">T</span>&gt;* p_tree, <span style="color: #ad7fa8;">VisitFun</span> visitFun)
+{
+    <span style="color: #ad7fa8;">stack</span>&lt;<span style="color: #ad7fa8;">TreeNode</span>&lt;<span style="color: #ad7fa8;">T</span>&gt;*&gt; node_stack;
+    <span style="color: #729fcf;">while</span> (p_tree != <span style="color: #4e9a06;">NULL</span> || !node_stack.empty())
+    {
+        <span style="color: #729fcf;">while</span> (p_tree != <span style="color: #4e9a06;">NULL</span>)
+        {
+            p_tree-&gt;isFirst = <span style="color: #4e9a06;">true</span>;
+            node_stack.push(p_tree);
+            p_tree = p_tree-&gt;left;
+        }
+        <span style="color: #729fcf;">if</span> (!node_stack.empty())
+        {
+            p_tree = node_stack.top();
+            node_stack.pop();
+            <span style="color: #729fcf;">if</span> (p_tree-&gt;isFirst == <span style="color: #4e9a06;">true</span>)
+            {
+                p_tree-&gt;isFirst = <span style="color: #4e9a06;">false</span>;
+                node_stack.push(p_tree);
+                p_tree = p_tree-&gt;right;
+            }
+            <span style="color: #729fcf;">else</span>
+            {
+                visitFun(p_tree-&gt;value);
+                p_tree = <span style="color: #4e9a06;">NULL</span>;
+            }
+        }
+    }
+}
+
+</pre>
+
+</li>
+</ul>
+<ul>
+<li id="sec-3-1-1-3-2">第二种思路<br/>
+要保证根结点在左孩子和右孩子访问之后才能访问，因此对于任一结点P，先将其入栈。
+如果P不存在左孩子和右孩子，则可以直接访问它；或者P存在左孩子或者右孩子，但是其左孩子和右孩子都已被访问过了，则同样可以直接访问该结点。
+若非上述两种情况，则将P的右孩子和左孩子依次入栈，这样就保证了每次取栈顶元素的时候，左孩子在右孩子前面被访问，左孩子和右孩子都在根结点前面被访问。
+
+
+
+<pre class="src src-c++"><span style="color: #729fcf;">template</span> &lt;<span style="color: #729fcf;">typename</span> <span style="color: #ad7fa8;">T</span>, <span style="color: #729fcf;">typename</span> <span style="color: #ad7fa8;">VisitFun</span>&gt;
+<span style="color: #ad7fa8;">void</span> <span style="color: #c4a000;">post_order_visit_no_recursive2</span>(<span style="color: #ad7fa8;">TreeNode</span>&lt;<span style="color: #ad7fa8;">T</span>&gt;* p_tree, <span style="color: #ad7fa8;">VisitFun</span> visitFun)    <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#26377;BUG&#65292;&#23569;&#26368;&#24038;&#36793;&#30340;&#21494;&#23376;&#33410;&#28857;&#65311;</span>
+{
+    <span style="color: #ad7fa8;">stack</span>&lt;<span style="color: #ad7fa8;">TreeNode</span>&lt;<span style="color: #ad7fa8;">T</span>&gt;*&gt; node_stack;
+    node_stack.push(p_tree);
+    <span style="color: #ad7fa8;">TreeNode</span>&lt;<span style="color: #ad7fa8;">T</span>&gt;* p_previous = <span style="color: #4e9a06;">NULL</span>;
+    <span style="color: #ad7fa8;">TreeNode</span>&lt;<span style="color: #ad7fa8;">T</span>&gt;* p_current;
+
+    <span style="color: #729fcf;">while</span> (!node_stack.empty())
+    {
+        p_current = node_stack.top();
+        <span style="color: #729fcf;">if</span> ((p_current-&gt;left == <span style="color: #4e9a06;">NULL</span> &amp;&amp; p_current-&gt;right == <span style="color: #4e9a06;">NULL</span>) || (p_current != <span style="color: #4e9a06;">NULL</span> &amp;&amp; (p_previous == p_current-&gt;left || p_previous == p_current-&gt;right)))    <span style="color: #61635e;">//</span><span style="color: #6A6F63;">&#22914;&#26524;&#24403;&#21069;&#32467;&#28857;&#27809;&#26377;&#23401;&#23376;&#32467;&#28857;&#25110;&#32773;&#23401;&#23376;&#33410;&#28857;&#37117;&#24050;&#34987;&#35775;&#38382;&#36807;</span>
+        {
+            visitFun(p_current-&gt;value);
+            node_stack.pop();
+            p_previous = p_current;
+        }
+        <span style="color: #729fcf;">else</span>
+        {
+            <span style="color: #729fcf;">if</span> (p_current-&gt;right != <span style="color: #4e9a06;">NULL</span>)
+            {
+                node_stack.push(p_current-&gt;right);
+            }
+            <span style="color: #729fcf;">if</span> (p_current-&gt;left != <span style="color: #4e9a06;">NULL</span>)
+            {
+                node_stack.push(p_current-&gt;left);
+            }
+        }
+    }
+}
+
+</pre>
+
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> 参考内容</h2>
+<div class="outline-text-2" id="text-4">
+
+
+</div>
+
+<div id="outline-container-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> <a href="http://bbs.bccn.net/thread-175695-1-1.html">http://bbs.bccn.net/thread-175695-1-1.html</a></h3>
+<div class="outline-text-3" id="text-4-1">
+
+<p>一般根据是否需要回朔可以把递归分成简单递归和复杂递归
+简单递归一般就是根据递归式来找出递推公式（这也就引申出分治思想和动态规划）
+复杂递归一般就是模拟系统处理递归的机制，使用栈或队列等数据结构保存回朔点来求解
+</p>
+<p>
+递归的几个 <b>特点</b>
+</p><ol>
+<li>递归式，就是如何将原问题划分成子问题。
+</li>
+<li>递归出口，递归终止的条件，即 <b>最小子问题的求解</b> ，可以允许多个出口。
+</li>
+<li>界函数，问题规模变化的函数，它保证递归的规模向出口条件靠拢
+</li>
+</ol>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> <a href="http://zh.wikipedia.org/zh-cn/尾部递归">http://zh.wikipedia.org/zh-cn/尾部递归</a></h3>
+<div class="outline-text-3" id="text-4-2">
+
+<p>尾递归：如果在递归函数中，递归调用返回的结果总被直接返回，则称为尾部递归
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-4-3" class="outline-3">
+<h3 id="sec-4-3"><span class="section-number-3">4.3</span> <a href="http://blog.zhaojie.me/2009/03/tail-recursion-and-continuation.html">http://blog.zhaojie.me/2009/03/tail-recursion-and-continuation.html</a></h3>
+<div class="outline-text-3" id="text-4-3">
+
+<p>与普通递归相比，由于尾递归的调用处于方法的最后，因此方法之前所积累下的各种状态对于递归调用结果已经没有任何意义，因此完全可以把本次方法中留在堆栈中的数据完全清除，把空间让给最后的递归调用。
+这样的优化便使得递归不会在调用堆栈上产生堆积，意味着即时是“无限”递归也不会让堆栈溢出。这便是尾递归的 <b>优势</b> 。
+尾递归的 <b>本质</b> ，其实是将递归方法中的需要的“所有状态”通过方法的参数传入下一次调用中
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-4-4" class="outline-3">
+<h3 id="sec-4-4"><span class="section-number-3">4.4</span> <a href="http://bbs.chinaunix.net/forum.php?mod=viewthread&amp;tid=331522">http://bbs.chinaunix.net/forum.php?mod=viewthread&amp;tid=331522</a></h3>
+<div class="outline-text-3" id="text-4-4">
+
+<p>递归调用时数据都是保存在栈中的,有多少个数据需要保存就要设置多少个栈,
+而且最重要的一点是:控制所有这些栈的栈顶指针都是相同的,否则无法实现同步
+</p>
+<p>
+树的三种遍历方式,抽象出来只有三种操作:访问当前结点,访问左子树,访问右子树.这三种操作的顺序不同,遍历方式也不同.如果我们再抽象一点,对这三种操作再进行一个概括,可以得到:
+a)访问当前结点:对目前的数据进行一些处理;
+b)访问左子树: <b>变换当前的数据</b> 以进行下一次处理;
+c)访问右子树: <b>再次变换</b> 当前的数据以进行下一次处理(与访问左子树所不同的方式).
+</p>
+<p>
+如何确定转移到哪里继续执行?关键在于以下三个地方:
+a)确定对当前数据的访问顺序,简单一点说就是确定这个递归程序 <span style="text-decoration:underline;">可以转换为哪种方式遍历的树结构</span>;
+b)确定这个递归函数转换为递归调用树时的分支是如何划分的,即确定 <span style="text-decoration:underline;">什么是这个递归调用树的"左子树"和"右子树</span>"
+c)确定这个递归调用树何时返回,即确定什么结点是这个递归调用树的 <b>叶子结点</b>.
+</p>
+<p>
+非尾部递归,在一个选择分支中有至少一个的递归调用.
+相对而言,尾部递归就容易很多了,因为与非尾部递归相比,每个选择分支只有一个递归调用,
+我们在解决的时候就不需要使用到栈,只要循环和设置好循环体就可以了
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-4-5" class="outline-3">
+<h3 id="sec-4-5"><span class="section-number-3">4.5</span> <a href="http://mingliangfeng.iteye.com/blog/201084">http://mingliangfeng.iteye.com/blog/201084</a></h3>
+<div class="outline-text-3" id="text-4-5">
+
+<p>递归程序转换成非递归程序时有固定的模式可循，将这个模式抽象成通用的模板，就有可能实现递归至非递归程序的自动转换。
+根据前面的分析，将递归计算用树型结构来表达，计算父节点时，会要求计算出其子节点的值。
+如果用一个堆栈来表示，则计算父节点时，会先将该父节点压入堆栈，待到其依赖的所有子节点的值都计算出时，再将其弹出并计算其值；
+在计算其子节点时依照相同的原理，直至遇到叶子节点。
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> 参考资料</h2>
+<div class="outline-text-2" id="text-5">
+
+</div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2012-09-21 08:48:49 中国标准时间</p>
+<p class="author">Author: wyj</p>
+<p class="creator">Org version 7.8.11 with Emacs version 24</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>

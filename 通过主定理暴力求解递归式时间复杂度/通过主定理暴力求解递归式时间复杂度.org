@@ -1,0 +1,28 @@
+#+TITLE: 通过主定理暴力求解递归式时间复杂度
+#+AUTHOR: wyj
+#+EMAIL: rs@whu.edu.cn
+#+KEYWORDS: emacs, notes
+#+OPTIONS: H:2 toc:t ^:{}
+#+STYLE: <link rel="stylesheet" type="text/css" href="./style/style.css" />
+
+* 前言
+
+* CLRS版本的主定理
+
+* Wikipedia上的主定理
+
+* Dartmouth College——这个最暴力
+设递归式为
+[[./递归式.gif]]
+则
+1. [[./log.gif]] < c; [[./1.gif]]
+2. [[./log.gif]] = c; [[./2.gif]]
+3. [[./log.gif]] > c; [[./3.gif]]
+
+* 参考资料
+#+begin_example
+http://en.wikipedia.org/wiki/Master_theorem
+http://www.math.dartmouth.edu/archive/m19w03/public_html/Section5-2.pdf
+http://people.csail.mit.edu/thies/6.046-web/master.pdf
+http://www.cnblogs.com/SelaSelah/archive/2012/06/04/2535271.html
+#+end_example

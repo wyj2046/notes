@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>《深入浅出SQL》</title>
+<meta http-equiv="Content-Type" content="text/html;charset=gbk"/>
+<meta name="title" content="《深入浅出SQL》"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-09-15 19:12:29 中国标准时间"/>
+<meta name="author" content="wyj"/>
+<meta name="description" content=""/>
+<meta name="keywords" content="emacs, notes"/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="./style/style.css" />
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">《深入浅出SQL》</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 chp1</a>
+<ul>
+<li><a href="#sec-1-1">1.1 复习要点</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2 chp2</a>
+<ul>
+<li><a href="#sec-2-1">2.1 没有蠢问题</a></li>
+<li><a href="#sec-2-2">2.2 再谈LIKE</a></li>
+<li><a href="#sec-2-3">2.3 偷偷告诉你……BETWEEN更好</a></li>
+<li><a href="#sec-2-4">2.4 更多NOT</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3 chp3</a>
+<ul>
+<li><a href="#sec-3-1">3.1 UPDATE的规则</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4 chp4</a>
+<ul>
+<li><a href="#sec-4-1">4.1 达成1NF的半路上</a></li>
+<li><a href="#sec-4-2">4.2 主键规则</a></li>
+</ul>
+</li>
+<li><a href="#sec-5">5 chp5</a>
+<ul>
+<li><a href="#sec-5-1">5.1 没有蠢问题</a></li>
+<li><a href="#sec-5-2">5.2 没有蠢问题</a></li>
+</ul>
+</li>
+<li><a href="#sec-6">6 chp7</a>
+<ul>
+<li><a href="#sec-6-1">6.1 外键二三事</a></li>
+<li><a href="#sec-6-2">6.2 外键约束</a></li>
+<li><a href="#sec-6-3">6.3 p308</a></li>
+<li><a href="#sec-6-4">6.4 p315</a></li>
+<li><a href="#sec-6-5">6.5 p316</a></li>
+<li><a href="#sec-6-6">6.6 p322</a></li>
+<li><a href="#sec-6-7">6.7 p323</a></li>
+<li><a href="#sec-6-8">6.8 p324</a></li>
+<li><a href="#sec-6-9">6.9 p325</a></li>
+<li><a href="#sec-6-10">6.10 p326</a></li>
+<li><a href="#sec-6-11">6.11 p331</a></li>
+<li><a href="#sec-6-12">6.12 p336</a></li>
+<li><a href="#sec-6-13">6.13 p359</a></li>
+<li><a href="#sec-6-14">6.14 p363</a></li>
+<li><a href="#sec-6-15">6.15 p368</a></li>
+</ul>
+</li>
+<li><a href="#sec-7">7 chp9</a>
+<ul>
+<li><a href="#sec-7-1">7.1 p386</a></li>
+<li><a href="#sec-7-2">7.2 p399</a></li>
+<li><a href="#sec-7-3">7.3 p403</a></li>
+</ul>
+</li>
+<li><a href="#sec-8">8 chp10</a>
+<ul>
+<li><a href="#sec-8-1">8.1 p419</a></li>
+<li><a href="#sec-8-2">8.2 p421</a></li>
+<li><a href="#sec-8-3">8.3 p432</a></li>
+<li><a href="#sec-8-4">8.4 p435</a></li>
+<li><a href="#sec-8-5">8.5 p438</a></li>
+</ul>
+</li>
+<li><a href="#sec-9">9 chp11</a>
+<ul>
+<li><a href="#sec-9-1">9.1 p477</a></li>
+<li><a href="#sec-9-2">9.2 p482</a></li>
+<li><a href="#sec-9-3">9.3 p483</a></li>
+<li><a href="#sec-9-4">9.4 p484</a></li>
+</ul>
+</li>
+<li><a href="#sec-10">10 chp12</a>
+<ul>
+<li><a href="#sec-10-1">10.1 p499</a></li>
+<li><a href="#sec-10-2">10.2 p504</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> chp1</h2>
+<div class="outline-text-2" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> 复习要点</h3>
+<div class="outline-text-3" id="text-1-1">
+
+<ul>
+<li>CREATE DATABASE 数据库名
+</li>
+<li>USE DATABASE
+</li>
+<li>CREATE TABLE 表名
+</li>
+<li>DESC 表名
+</li>
+<li>DROP TABLE 表名
+</li>
+<li>INSERT INTO 表名 (列名1, 列名2, &hellip;) VALUES (值1, 值2, &hellip;)
+</li>
+</ul>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> chp2</h2>
+<div class="outline-text-2" id="text-2">
+
+
+</div>
+
+<div id="outline-container-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 没有蠢问题</h3>
+<div class="outline-text-3" id="text-2-1">
+
+<p>SQL中能用双引号代替单引号吗？
+不能，因为SQL语句日后会搭配其他编程语言(如PHP)。在编程语言中使用""表示"从这里开始是SQL语句"，这样单引号才会被视为SQL语句的一部分，而不是其他编程语言的一部分
+</p></div>
+
+</div>
+
+<div id="outline-container-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> 再谈LIKE</h3>
+<div class="outline-text-3" id="text-2-2">
+
+<p>LIKE喜欢和通配符在一起，第一个通配符是%，它是 <b>任意数量</b> 的位置字符串的替身
+LIKE喜欢的第二个通配符是下划线_，它是 <b>一个</b> 未知字符的替身
+</p></div>
+
+</div>
+
+<div id="outline-container-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> 偷偷告诉你……BETWEEN更好</h3>
+<div class="outline-text-3" id="text-2-3">
+
+<p>BETWEEN等于使用&lt;=加&gt;=，但不等于&lt;加&gt;
+</p></div>
+
+</div>
+
+<div id="outline-container-2-4" class="outline-3">
+<h3 id="sec-2-4"><span class="section-number-3">2.4</span> 更多NOT</h3>
+<div class="outline-text-3" id="text-2-4">
+
+<p>NOT可以和BETWEEN和LIKE一起使用。重点是记得 <b>NOT一定要紧接在WHERE后面</b>
+当NOT和AND或OR一起使用时，则要直接接在AND或OR的后面
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> chp3</h2>
+<div class="outline-text-2" id="text-3">
+
+<p>看起来好像有些你不想删除的数据被删除了。也许应该先SELECT一下，看看哪些数据会被某些WHERE子句删除
+</p>
+</div>
+
+<div id="outline-container-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> UPDATE的规则</h3>
+<div class="outline-text-3" id="text-3-1">
+
+<ul>
+<li>使用UPDATE，你可以改变单一列或所有列的值。在SET子句中加入更多column = value组，其间以逗号分隔
+</li>
+<li>UPDTAE可用于更新单一行或多行，一切都交给WHERE子句决定
+</li>
+</ul>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> chp4</h2>
+<div class="outline-text-2" id="text-4">
+
+
+</div>
+
+<div id="outline-container-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> 达成1NF的半路上</h3>
+<div class="outline-text-3" id="text-4-1">
+
+<ol>
+<li>每个数据行必须包含具有原子性的值
+</li>
+<li>每个数据行必须由独一无二的识别项，人称主键
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> 主键规则</h3>
+<div class="outline-text-3" id="text-4-2">
+
+<p>主键：是表中的某个列，它可以 <b>让每一条记录称为唯一</b> 的
+</p><ul>
+<li>主键不可以为NULL
+</li>
+<li>插入新纪录时必须指定主键值
+</li>
+<li>主键必须简洁
+</li>
+<li>主键值不可以被修改
+</li>
+</ul>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> chp5</h2>
+<div class="outline-text-2" id="text-5">
+
+
+</div>
+
+<div id="outline-container-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> 没有蠢问题</h3>
+<div class="outline-text-3" id="text-5-1">
+
+<ul>
+<li>创建表后你就无法真正地改变列的顺序了。最多只能在指定位置添加新列，然后删除旧列，但这样会丢失旧列中的所有数据
+</li>
+<li>磁盘里存储数据的顺序并给不重要
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-5-2" class="outline-3">
+<h3 id="sec-5-2"><span class="section-number-3">5.2</span> 没有蠢问题</h3>
+<div class="outline-text-3" id="text-5-2">
+
+<p>每个表中只有一列可以加上AUTO_INCREMENT，该列必须为整数类型而且不能包含NULL
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> chp7</h2>
+<div class="outline-text-2" id="text-6">
+
+<p>我们需要把不符合原子性的列移入新的表
+对数据库内的 <span style="text-decoration:underline;">数据描述</span> (列和表)，以及任何相关对象和各种 <span style="text-decoration:underline;">连接</span> 方式的描述就称为 <span style="text-decoration:underline;">SCHEMA</span> ，模式
+为表创建图表可以协助我们 <span style="text-decoration:underline;">分别看待</span> 表的 <span style="text-decoration:underline;">设计</span> 与其中的 <span style="text-decoration:underline;">数据</span>
+</p>
+</div>
+
+<div id="outline-container-6-1" class="outline-3">
+<h3 id="sec-6-1"><span class="section-number-3">6.1</span> 外键二三事</h3>
+<div class="outline-text-3" id="text-6-1">
+
+<ul>
+<li>外键使用的主键也被称为父键(parent key)
+</li>
+<li>主键所在的表友被称为父表(parent table)
+</li>
+<li>外键能用于确认一张表中的行与另一张表中的行相对应
+</li>
+<li>外键的值可以是NULL，即使主键值不可为NULL
+</li>
+<li>外键值不需唯一——事实上，外键通常都没有唯一性
+</li>
+</ul>
+
+<p>外键为NULL，表示在父表中没有相符的主键
+</p></div>
+
+</div>
+
+<div id="outline-container-6-2" class="outline-3">
+<h3 id="sec-6-2"><span class="section-number-3">6.2</span> 外键约束</h3>
+<div class="outline-text-3" id="text-6-2">
+
+<p>插入外键列的值必须已经存在于父表的来源列中，这是 <span style="text-decoration:underline;">引用完整性</span>
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-6-3" class="outline-3">
+<h3 id="sec-6-3"><span class="section-number-3">6.3</span> p308</h3>
+<div class="outline-text-3" id="text-6-3">
+
+<p>外键约束能确保引用完整性
+</p></div>
+
+</div>
+
+<div id="outline-container-6-4" class="outline-3">
+<h3 id="sec-6-4"><span class="section-number-3">6.4</span> p315</h3>
+<div class="outline-text-3" id="text-6-4">
+
+<p>此时，在两个多对多的表之间需要一个中间桥梁来存储所有woman_id和shoe_id，从而把关系简化为一对多。
+这个中间桥梁就是所谓的junction table(连接表)，用它来存储两个相关表的主键
+</p></div>
+
+</div>
+
+<div id="outline-container-6-5" class="outline-3">
+<h3 id="sec-6-5"><span class="section-number-3">6.5</span> p316</h3>
+<div class="outline-text-3" id="text-6-5">
+
+<p>遇到多对多关系的时候，一定要创建中间表
+</p></div>
+
+</div>
+
+<div id="outline-container-6-6" class="outline-3">
+<h3 id="sec-6-6"><span class="section-number-3">6.6</span> p322</h3>
+<div class="outline-text-3" id="text-6-6">
+
+<p>组合键就是由多个数据列构成的主键，组合各列后形成具有唯一性的键
+</p></div>
+
+</div>
+
+<div id="outline-container-6-7" class="outline-3">
+<h3 id="sec-6-7"><span class="section-number-3">6.7</span> p323</h3>
+<div class="outline-text-3" id="text-6-7">
+
+<p>当某列的数据必须随着另一列的数据的改变而改变时，表示第一列 <span style="text-decoration:underline;">函数依赖</span> 于第二列
+</p></div>
+
+</div>
+
+<div id="outline-container-6-8" class="outline-3">
+<h3 id="sec-6-8"><span class="section-number-3">6.8</span> p324</h3>
+<div class="outline-text-3" id="text-6-8">
+
+<p>T.x -&gt; T.y
+可以解释成“在关系表T中，y列函数依赖于x列”。基本上，从右读到左就是解读依赖性的方式
+</p></div>
+
+</div>
+
+<div id="outline-container-6-9" class="outline-3">
+<h3 id="sec-6-9"><span class="section-number-3">6.9</span> p325</h3>
+<div class="outline-text-3" id="text-6-9">
+
+<p>部分函数依赖是指非主键的某列依赖于组合主键的某个部分(但不是完全依赖于组合主键)
+在超级英雄表中，initials列对name列的依赖正是部分依赖性的例子。
+如果超级英雄改名了，那么缩写列也要跟着修改，但英雄的能力如果变了，缩写并不需要跟着修改
+</p></div>
+
+</div>
+
+<div id="outline-container-6-10" class="outline-3">
+<h3 id="sec-6-10"><span class="section-number-3">6.10</span> p326</h3>
+<div class="outline-text-3" id="text-6-10">
+
+<p>如果改变任何非键列可能造成其他列的改变，即为传递依赖
+传递函数依赖：任何非键列与另一个非键列有关联
+</p></div>
+
+</div>
+
+<div id="outline-container-6-11" class="outline-3">
+<h3 id="sec-6-11"><span class="section-number-3">6.11</span> p331</h3>
+<div class="outline-text-3" id="text-6-11">
+
+<p>第二范式，又称2NF：
+规则一：先符合1NF
+规则二：没有部分函数依赖性
+</p></div>
+
+</div>
+
+<div id="outline-container-6-12" class="outline-3">
+<h3 id="sec-6-12"><span class="section-number-3">6.12</span> p336</h3>
+<div class="outline-text-3" id="text-6-12">
+
+<p>任何具有人工主键且没有组合主键的表都符合2NF
+第三范式，又称3NF：
+规则一：符合2NF
+规则二：没有传递函数依赖性
+</p></div>
+
+</div>
+
+<div id="outline-container-6-13" class="outline-3">
+<h3 id="sec-6-13"><span class="section-number-3">6.13</span> p359</h3>
+<div class="outline-text-3" id="text-6-13">
+
+<p>交叉联接是内联接的一种。
+内联接基本上就是通过查询中的条件移除了某些结果数据行后的交叉联接。
+</p></div>
+
+</div>
+
+<div id="outline-container-6-14" class="outline-3">
+<h3 id="sec-6-14"><span class="section-number-3">6.14</span> p363</h3>
+<div class="outline-text-3" id="text-6-14">
+
+<p>INNER JOIN利用条件式里的比较运算符结合两张表
+</p></div>
+
+</div>
+
+<div id="outline-container-6-15" class="outline-3">
+<h3 id="sec-6-15"><span class="section-number-3">6.15</span> p368</h3>
+<div class="outline-text-3" id="text-6-15">
+
+<p>自然联接只有在联接的列在两张表中的名称都相同时才会有用
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> chp9</h2>
+<div class="outline-text-2" id="text-7">
+
+
+</div>
+
+<div id="outline-container-7-1" class="outline-3">
+<h3 id="sec-7-1"><span class="section-number-3">7.1</span> p386</h3>
+<div class="outline-text-3" id="text-7-1">
+
+<p>子查询，是被另一个查询包围的查询，也可称为内层查询
+</p></div>
+
+</div>
+
+<div id="outline-container-7-2" class="outline-3">
+<h3 id="sec-7-2"><span class="section-number-3">7.2</span> p399</h3>
+<div class="outline-text-3" id="text-7-2">
+
+<p>如果子查询可以 <span style="text-decoration:underline;">独立运行</span> 且 <span style="text-decoration:underline;">不会引用</span> 外层查询的任何结果，即称为 <span style="text-decoration:underline;">非关联子查询</span>
+</p></div>
+
+</div>
+
+<div id="outline-container-7-3" class="outline-3">
+<h3 id="sec-7-3"><span class="section-number-3">7.3</span> p403</h3>
+<div class="outline-text-3" id="text-7-3">
+
+<p><span style="text-decoration:underline;">非关联子查询</span> 使用IN或NOT IN来检查子查询返回的值是否为集合的成员之一
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> chp10</h2>
+<div class="outline-text-2" id="text-8">
+
+
+</div>
+
+<div id="outline-container-8-1" class="outline-3">
+<h3 id="sec-8-1"><span class="section-number-3">8.1</span> p419</h3>
+<div class="outline-text-3" id="text-8-1">
+
+<p><span style="text-decoration:underline;">LEFT OUTER JOIN</span> 会匹配左表中的每一行及右表中符合条件的行
+</p></div>
+
+</div>
+
+<div id="outline-container-8-2" class="outline-3">
+<h3 id="sec-8-2"><span class="section-number-3">8.2</span> p421</h3>
+<div class="outline-text-3" id="text-8-2">
+
+<p>内联接与外联接的差别：外联接一定会提供数据行，无论该行能否在另一个表中找出相应匹配的行。
+左外联接的结果集中的NULL表示右表中 <span style="text-decoration:underline;">没有</span> 找到与左表相符的记录
+</p></div>
+
+</div>
+
+<div id="outline-container-8-3" class="outline-3">
+<h3 id="sec-8-3"><span class="section-number-3">8.3</span> p432</h3>
+<div class="outline-text-3" id="text-8-3">
+
+<p><span style="text-decoration:underline;">自引用外键</span> 是个出于其他目的而用于 <span style="text-decoration:underline;">同一张表</span> 的主键
+</p></div>
+
+</div>
+
+<div id="outline-container-8-4" class="outline-3">
+<h3 id="sec-8-4"><span class="section-number-3">8.4</span> p435</h3>
+<div class="outline-text-3" id="text-8-4">
+
+<p>自联接能把单一表当成两张具有完全相同的信息的表来进行查询
+</p></div>
+
+</div>
+
+<div id="outline-container-8-5" class="outline-3">
+<h3 id="sec-8-5"><span class="section-number-3">8.5</span> p438</h3>
+<div class="outline-text-3" id="text-8-5">
+
+<p>UNION只能接受一个ORDER BY且必须位于语句末端
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-9" class="outline-2">
+<h2 id="sec-9"><span class="section-number-2">9</span> chp11</h2>
+<div class="outline-text-2" id="text-9">
+
+
+</div>
+
+<div id="outline-container-9-1" class="outline-3">
+<h3 id="sec-9-1"><span class="section-number-3">9.1</span> p477</h3>
+<div class="outline-text-3" id="text-9-1">
+
+<p>当数据库的使用者不只一人时，CHECK CONSTRAINT与视图均有助于维护控制权
+</p></div>
+
+</div>
+
+<div id="outline-container-9-2" class="outline-3">
+<h3 id="sec-9-2"><span class="section-number-3">9.2</span> p482</h3>
+<div class="outline-text-3" id="text-9-2">
+
+<p><b>事务</b> 是一群可完成一组工作的SQL语句
+在事务过程中，如果 <span style="text-decoration:underline;">所有</span> 步骤无法不受干扰地完成，则不该完成 <span style="text-decoration:underline;">任何</span> 单一步骤
+</p></div>
+
+</div>
+
+<div id="outline-container-9-3" class="outline-3">
+<h3 id="sec-9-3"><span class="section-number-3">9.3</span> p483</h3>
+<div class="outline-text-3" id="text-9-3">
+
+<ul>
+<li id="sec-9-3-1">ACID:Automicity<br/>
+    原子性。事务里的每一个步骤都必须完成，否则只能都不完成。不能只执行部分事务
+</li>
+</ul>
+<ul>
+<li id="sec-9-3-2">ACID:Consistency<br/>
+    一致性。事务完成后应该维持数据库的一致性。
+</li>
+</ul>
+<ul>
+<li id="sec-9-3-3">ACID:Isolation<br/>
+    隔离性。表示每次事务都会看到具有一致性的数据库，无论其他事务有什么行动。
+</li>
+</ul>
+<ul>
+<li id="sec-9-3-4">ACID:Durability<br/>
+    持久性。事务完成后，数据库需要正确地存储数据并保护数据免受断电或其他威胁的伤害。
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-9-4" class="outline-3">
+<h3 id="sec-9-4"><span class="section-number-3">9.4</span> p484</h3>
+<div class="outline-text-3" id="text-9-4">
+
+<p>在你COMMIT之前数据库都不会发生任何改变
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-10" class="outline-2">
+<h2 id="sec-10"><span class="section-number-2">10</span> chp12</h2>
+<div class="outline-text-2" id="text-10">
+
+
+</div>
+
+<div id="outline-container-10-1" class="outline-3">
+<h3 id="sec-10-1"><span class="section-number-3">10.1</span> p499</h3>
+<div class="outline-text-3" id="text-10-1">
+
+<p>使用GRANT语句可以控制用户对表和列可执行的操作
+</p></div>
+
+</div>
+
+<div id="outline-container-10-2" class="outline-3">
+<h3 id="sec-10-2"><span class="section-number-3">10.2</span> p504</h3>
+<div class="outline-text-3" id="text-10-2">
+
+<p>GRANT TO
+REVOKE FROM
+</p></div>
+</div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2012-09-15 19:12:29 中国标准时间</p>
+<p class="author">Author: wyj</p>
+<p class="creator">Org version 7.8.11 with Emacs version 24</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>

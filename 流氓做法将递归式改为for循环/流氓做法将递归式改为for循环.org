@@ -1,0 +1,343 @@
+#+TITLE: 递归、尾递归、非递归
+#+AUTHOR: wyj
+#+EMAIL: rs@whu.edu.cn
+#+KEYWORDS: 算法, notes
+#+OPTIONS: H:2 toc:t ^:{}
+#+STYLE: <link rel="stylesheet" type="text/css" href="./style/style.css" />
+* 流氓做法直接将递归式改为for循环
+** 步骤
+1. 将函数表示为result，边界条件的返回值就是result的初值
+2. 边界条件稍作改动成为for循环的判断条件
+3. 界函数作为for循环的变量改变部分
+4. 循环体内就是递归式
+5. 返回result
+** 例子1
+#+begin_src C
+int f_recursive(int m, int n)
+{
+    if (m == 0 && n >= 0) 
+	return 0;
+    return (f_recursive(m - 1, 2*n) + n);
+}
+#+end_src
+#+begin_src C
+int f_no_recursive(int m, int n)
+{
+    int result = 0;
+    for (; m != 0 && n >= 0; --m, n *= 2)
+    {
+	result += n;
+    }
+    return result;
+}
+#+end_src
+** 例子2
+#+begin_src C
+int f_recursive(int n)
+{
+    if (n == 0) 
+	return 1;
+    return (n * f_recursive(n/2));
+}
+#+end_src
+#+begin_src C
+int f_no_recursive(int n)
+{
+    int result = 1;
+    for (; n != 0; n /= 2)
+    {
+	result *= n;
+    }
+    return result;
+}
+#+end_src
+
+** 例子3  
+#+begin_src C
+int factorial_recursive(int n)
+{
+    if (n == 0)    //边界条件
+    {
+	return 1;
+    }
+    return factorial_recursive(n-1/*界函数*/) * n;    //f*n是递归式
+}
+#+end_src
+#+begin_src C
+int factorial_no_recursive(int n)
+{
+    int result = 1;
+    for (; n != 0; --n)
+    {
+	result *= n;
+    }
+    return result;
+}
+#+end_src
+* 递归转尾递归转循环
+** 步骤
+** 例子 
+*** Factorial
+#+begin_src C
+int factorial_recursive(int n)
+{
+    if (n == 0)    //边界条件
+    {
+	return 1;
+    }
+    return factorial_recursive(n-1/*界函数*/) * n;    //f*n是递归式
+}
+#+end_src
+
+#+begin_src C
+int factorial_tail_recursive(int n, int acc)    //用acc表示f的返回结果
+{
+    if (n == 0)
+    {
+	return acc;
+    }
+    return factorial_tail_recursive(n-1/*界函数*/, acc*n);    //acc*n 递归式
+}
+#+end_src
+
+#+begin_src C
+int factorial_loop(int n, int acc)
+{
+    while (true)
+    {
+	if (n == 0)
+	{
+	    return acc;
+	}
+	acc *= n;
+	--n;
+    }
+}
+#+end_src
+
+*** Fibonacci
+#+begin_src C
+int fibonacci_recursive(int n)
+{
+    if (n < 2)    //递归出口
+    {
+	return n;
+    }
+    return fibonacci_recursive(n-1) + fibonacci_recursive(n-2);
+}
+#+end_src
+
+#+begin_src C
+int fibonacci_tail_recursive(int n, int acc1, int acc2)
+{
+    if (n == 0)
+    {
+	return acc1;
+    }
+    return fibonacci_tail_recursive(n-1, acc2, acc1+acc2);
+}
+#+end_src
+
+#+begin_src C
+int fibonacci_loop(int n, int acc1, int acc2)
+{
+    while (true)
+    {
+	if (n == 0)
+	{
+	    return acc1;
+	}
+	int temp = acc1;
+	acc1 = acc2;
+	acc2 = temp + acc2;
+	--n;
+    }
+}
+#+end_src
+* 二叉树非递归遍历
+** 参考内容
+*** http://www.cnblogs.com/dolphin0520/archive/2011/08/25/2153720.html
+**** 前序非递归
+根据前序遍历访问的顺序，优先访问根结点，然后再分别访问左孩子和右孩子。
+即对于任一结点，其可看做是根结点，因此可以直接访问，访问完之后，若其左孩子不为空，按相同规则访问它的左子树；
+当访问完左子树时，再访问它的右子树。因此其处理过程如下：
+     对于任一结点P：
+     1) 访问结点P，并将结点P入栈;
+     2) 判断结点P的左孩子是否为空，若为空，则取栈顶结点并进行出栈操作，并将栈顶结点的右孩子置为当前的结点P，循环至1);
+                              若不为空，则将P的左孩子置为当前的结点P;
+     3) 直到P为NULL并且栈为空，则遍历结束。
+#+begin_src c++
+template <typename T, typename VisitFun>    //貌似这个版本正规些
+void pre_order_visit_no_recursive2(TreeNode<T>* p_tree, VisitFun visitFun)
+{
+    stack<TreeNode<T>*> node_stack;
+
+    while (p_tree != NULL || !node_stack.empty())    //直到p_tree为NULL并且栈为空，则遍历结束
+    {
+	while (p_tree != NULL)
+	{
+	    visitFun(p_tree->value);    //访问结点p_tree，
+	    node_stack.push(p_tree);    //并将结点p_tree入栈;
+	    p_tree = p_tree->left;      //若不为空，则将p_tree的左孩子置为当前的结点p_tree
+	}
+	if (!node_stack.empty())
+	{
+	    p_tree = node_stack.top();    //判断结点p_tree的左孩子是否为空，若为空，则取栈顶结点
+ 	    node_stack.pop();             //并进行出栈操作，
+	    p_tree = p_tree->right;       //并将栈顶结点的右孩子置为当前的结点p_tree，循环至1)
+	}
+    }
+}
+
+#+end_src
+**** 中序非递归
+根据中序遍历的顺序，对于任一结点，优先访问其左孩子，
+而左孩子结点又可以看做一根结点，然后继续访问其左孩子结点， *直到遇到左孩子结点为空的结点才进行访问* ，
+然后按相同的规则访问其右子树。因此其处理过程如下：
+   对于任一结点P：
+  1) 若其左孩子不为空，则将P入栈并将P的左孩子置为当前的P，然后对当前结点P再进行相同的处理；
+  2) 若其左孩子为空，则取栈顶元素并进行出栈操作，访问该栈顶结点，然后将当前的P置为栈顶结点的右孩子；
+  3) 直到P为NULL并且栈为空则遍历结束
+#+begin_src c++
+template <typename T, typename VisitFun>
+void in_order_visit_no_recursive(TreeNode<T>* p_tree, VisitFun visitFun)
+{
+    stack<TreeNode<T>*> node_stack;
+    while (p_tree != NULL || !node_stack.empty())    //直到p_tree为NULL并且栈为空则遍历结束
+    {
+	while (p_tree != NULL)
+	{
+	    node_stack.push(p_tree);    //若其左孩子不为空，则将p_tree入栈
+	    p_tree = p_tree->left;      //并将p_tree的左孩子置为当前的p_tree，然后对当前结点p_tree再进行相同的处理
+	}
+	if (!node_stack.empty())
+	{
+	    p_tree = node_stack.top();    //若其左孩子为空，则取栈顶元素并进行出栈操作，
+	    node_stack.pop();
+	    visitFun(p_tree->value);      //访问该栈顶结点，
+	    p_tree = p_tree->right;       //然后将当前的p_tree置为栈顶结点的右孩子
+	}
+    }
+}
+
+#+end_src
+**** 后续非递归
+
+***** 第一种思路
+对于任一结点P，将其入栈，然后沿其左子树一直往下搜索，直到搜索到没有左孩子的结点，此时该结点出现在栈顶，但是此时不能将其出栈并访问，因为其右孩子还未被访问。
+所以接下来按照相同的规则对其右子树进行相同的处理，当访问完其右孩子时，该结点又出现在栈顶，此时可以将其出栈并访问。这样就保证了正确的访问顺序。
+可以看出，在这个过程中，每个结点都两次出现在栈顶，只有在第二次出现在栈顶时，才能访问它。
+因此需要多设置一个变量标识该结点是否是第一次出现在栈顶。 
+#+begin_src c++
+template <typename T, typename VisitFun>
+void post_order_visit_no_recursive(TreeNode<T>* p_tree, VisitFun visitFun)
+{
+    stack<TreeNode<T>*> node_stack;
+    while (p_tree != NULL || !node_stack.empty())
+    {
+	while (p_tree != NULL)
+	{
+	    p_tree->isFirst = true;
+	    node_stack.push(p_tree);
+	    p_tree = p_tree->left;
+	}
+	if (!node_stack.empty())
+	{
+	    p_tree = node_stack.top();
+	    node_stack.pop();
+	    if (p_tree->isFirst == true)
+	    {
+		p_tree->isFirst = false;
+		node_stack.push(p_tree);
+		p_tree = p_tree->right;
+	    }
+	    else
+	    {
+		visitFun(p_tree->value);
+		p_tree = NULL;
+	    }
+	}
+    }
+}
+
+#+end_src
+***** 第二种思路
+要保证根结点在左孩子和右孩子访问之后才能访问，因此对于任一结点P，先将其入栈。
+如果P不存在左孩子和右孩子，则可以直接访问它；或者P存在左孩子或者右孩子，但是其左孩子和右孩子都已被访问过了，则同样可以直接访问该结点。
+若非上述两种情况，则将P的右孩子和左孩子依次入栈，这样就保证了每次取栈顶元素的时候，左孩子在右孩子前面被访问，左孩子和右孩子都在根结点前面被访问。
+#+begin_src c++
+template <typename T, typename VisitFun>
+void post_order_visit_no_recursive2(TreeNode<T>* p_tree, VisitFun visitFun)    //有BUG，少最左边的叶子节点？
+{
+    stack<TreeNode<T>*> node_stack;
+    node_stack.push(p_tree);
+    TreeNode<T>* p_previous = NULL;
+    TreeNode<T>* p_current;
+
+    while (!node_stack.empty())
+    {
+	p_current = node_stack.top();
+	if ((p_current->left == NULL && p_current->right == NULL) || (p_current != NULL && (p_previous == p_current->left || p_previous == p_current->right)))    //如果当前结点没有孩子结点或者孩子节点都已被访问过
+	{
+	    visitFun(p_current->value);
+	    node_stack.pop();
+	    p_previous = p_current;
+	}
+	else
+	{
+	    if (p_current->right != NULL)
+	    {
+		node_stack.push(p_current->right);
+	    }
+	    if (p_current->left != NULL)
+	    {
+		node_stack.push(p_current->left);
+	    }
+	}
+    }
+}
+
+#+end_src
+* 参考内容
+** http://bbs.bccn.net/thread-175695-1-1.html 
+一般根据是否需要回朔可以把递归分成简单递归和复杂递归
+简单递归一般就是根据递归式来找出递推公式（这也就引申出分治思想和动态规划）
+复杂递归一般就是模拟系统处理递归的机制，使用栈或队列等数据结构保存回朔点来求解
+
+递归的几个 *特点*
+1. 递归式，就是如何将原问题划分成子问题。
+2. 递归出口，递归终止的条件，即 *最小子问题的求解* ，可以允许多个出口。
+3. 界函数，问题规模变化的函数，它保证递归的规模向出口条件靠拢
+
+** http://zh.wikipedia.org/zh-cn/尾部递归
+尾递归：如果在递归函数中，递归调用返回的结果总被直接返回，则称为尾部递归
+
+** http://blog.zhaojie.me/2009/03/tail-recursion-and-continuation.html
+与普通递归相比，由于尾递归的调用处于方法的最后，因此方法之前所积累下的各种状态对于递归调用结果已经没有任何意义，因此完全可以把本次方法中留在堆栈中的数据完全清除，把空间让给最后的递归调用。
+这样的优化便使得递归不会在调用堆栈上产生堆积，意味着即时是“无限”递归也不会让堆栈溢出。这便是尾递归的 *优势* 。
+尾递归的 *本质* ，其实是将递归方法中的需要的“所有状态”通过方法的参数传入下一次调用中
+
+** http://bbs.chinaunix.net/forum.php?mod=viewthread&tid=331522
+递归调用时数据都是保存在栈中的,有多少个数据需要保存就要设置多少个栈,
+而且最重要的一点是:控制所有这些栈的栈顶指针都是相同的,否则无法实现同步
+
+树的三种遍历方式,抽象出来只有三种操作:访问当前结点,访问左子树,访问右子树.这三种操作的顺序不同,遍历方式也不同.如果我们再抽象一点,对这三种操作再进行一个概括,可以得到:
+a)访问当前结点:对目前的数据进行一些处理;
+b)访问左子树: *变换当前的数据* 以进行下一次处理;
+c)访问右子树: *再次变换* 当前的数据以进行下一次处理(与访问左子树所不同的方式).
+
+如何确定转移到哪里继续执行?关键在于以下三个地方:
+a)确定对当前数据的访问顺序,简单一点说就是确定这个递归程序 _可以转换为哪种方式遍历的树结构_;
+b)确定这个递归函数转换为递归调用树时的分支是如何划分的,即确定 _什么是这个递归调用树的"左子树"和"右子树_"
+c)确定这个递归调用树何时返回,即确定什么结点是这个递归调用树的 *叶子结点*.
+
+非尾部递归,在一个选择分支中有至少一个的递归调用.
+相对而言,尾部递归就容易很多了,因为与非尾部递归相比,每个选择分支只有一个递归调用,
+我们在解决的时候就不需要使用到栈,只要循环和设置好循环体就可以了
+
+** http://mingliangfeng.iteye.com/blog/201084
+递归程序转换成非递归程序时有固定的模式可循，将这个模式抽象成通用的模板，就有可能实现递归至非递归程序的自动转换。
+根据前面的分析，将递归计算用树型结构来表达，计算父节点时，会要求计算出其子节点的值。
+如果用一个堆栈来表示，则计算父节点时，会先将该父节点压入堆栈，待到其依赖的所有子节点的值都计算出时，再将其弹出并计算其值；
+在计算其子节点时依照相同的原理，直至遇到叶子节点。
+* 参考资料

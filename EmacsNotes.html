@@ -1,0 +1,855 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>EmacsNotes</title>
+<meta http-equiv="Content-Type" content="text/html;charset=gbk"/>
+<meta name="title" content="EmacsNotes"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-09-06 10:30:30 中国标准时间"/>
+<meta name="author" content="wyj"/>
+<meta name="description" content=""/>
+<meta name="keywords" content="emacs, notes"/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="./style/style.css" />
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">EmacsNotes</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 安装及环境配置</a>
+<ul>
+<li><a href="#sec-1-1">1.1 win7下配置emacs文件</a></li>
+<li><a href="#sec-1-2">1.2 崭新的ubuntu12.04安装Emacs24所要做的</a></li>
+<li><a href="#sec-1-3">1.3 字体设置</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2 常用函数及变量描述</a></li>
+<li><a href="#sec-3">3 键绑定</a></li>
+<li><a href="#sec-4">4 插件相关</a>
+<ul>
+<li><a href="#sec-4-1">4.1 Desktop</a></li>
+<li><a href="#sec-4-2">4.2 CEDET</a></li>
+<li><a href="#sec-4-3">4.3 Cscope</a></li>
+<li><a href="#sec-4-4">4.4 W3M</a></li>
+<li><a href="#sec-4-5">4.5 ECB</a></li>
+</ul>
+</li>
+<li><a href="#sec-5">5 模式相关</a>
+<ul>
+<li><a href="#sec-5-1">5.1 c模式</a></li>
+<li><a href="#sec-5-2">5.2 shell模式</a></li>
+</ul>
+</li>
+<li><a href="#sec-6">6 小技巧</a>
+<ul>
+<li><a href="#sec-6-1">6.1 不重新启动Emacs使.emacs的配置起作用(4选1)</a></li>
+<li><a href="#sec-6-2">6.2 在Emacs里面同时打开多个shell会话</a></li>
+<li><a href="#sec-6-3">6.3 重复命令</a></li>
+<li><a href="#sec-6-4">6.4 在你定制快捷键却不知道这个快捷键该如何写的时候，就让Emacs来告诉你</a></li>
+<li><a href="#sec-6-5">6.5 C-h 可以当前缀用，也可以当后缀用</a></li>
+</ul>
+</li>
+<li><a href="#sec-7">7 Bug fixs</a>
+<ul>
+<li><a href="#sec-7-1">7.1 安装问题</a></li>
+<li><a href="#sec-7-2">7.2 Emacs中shell的乱码问题(3种解决方案)</a></li>
+<li><a href="#sec-7-3">7.3 Aspell</a></li>
+<li><a href="#sec-7-4">7.4 Emacs24.1 + CEDET1.1 + ECB2.4</a></li>
+</ul>
+</li>
+<li><a href="#sec-8">8 Elisp</a></li>
+<li><a href="#sec-9">9 org-mode</a>
+<ul>
+<li><a href="#sec-9-1">9.1 自动补全内容元数据标记(省力啊，少打字)</a></li>
+<li><a href="#sec-9-2">9.2 图片标记方式(5种)</a></li>
+<li><a href="#sec-9-3">9.3 使导出的html格式符合某种风格</a></li>
+</ul>
+</li>
+<li><a href="#sec-10">10 Misc</a>
+<ul>
+<li><a href="#sec-10-1">10.1 几个好玩的模式</a></li>
+</ul>
+</li>
+<li><a href="#sec-11">11 FAQ</a></li>
+<li><a href="#sec-12">12 血的教训</a></li>
+<li><a href="#sec-13">13 有待折腾</a>
+<ul>
+<li><a href="#sec-13-1">13.1 anything</a></li>
+<li><a href="#sec-13-2">13.2 ecb</a></li>
+<li><a href="#sec-13-3">13.3 cscope</a></li>
+<li><a href="#sec-13-4">13.4 gtags</a></li>
+<li><a href="#sec-13-5">13.5 htags</a></li>
+</ul>
+</li>
+<li><a href="#sec-14">14 参考资料</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 安装及环境配置</h2>
+<div class="outline-text-2" id="text-1">
+
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> win7下配置emacs文件</h3>
+<div class="outline-text-3" id="text-1-1">
+
+
+<ol>
+<li>用emacs打开~路径,一般是C:\Users\rapid\AppData\Roaming
+</li>
+<li>看有没有.emacs文件，没有的话新建一个在.emacs里写上(load-file "E:/emacs-23.2/.emacs")
+</li>
+<li>此时就可以在Emacs文件夹下的.emacs里加内容了
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> 崭新的ubuntu12.04安装Emacs24所要做的</h3>
+<div class="outline-text-3" id="text-1-2">
+
+
+<ol>
+<li>sudo apt-get install libx11-dev
+</li>
+<li>sudo apt-get install libgtk-3-dev | configure时加选项–with-x-toolkit=gtk3
+</li>
+<li>sudo apt-get install libncurses5-dev
+</li>
+<li>sudo apt-get install libxaw7-dev libxpm-dev libpng12-dev libjpeg-dev libtiff4-dev libgif-dev
+</li>
+<li>./configure –with-x-toolkit=gtk3
+</li>
+<li>make
+</li>
+<li>src/emacs 这句测试emacs能用不
+</li>
+<li>sudo make install (END)
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> 字体设置</h3>
+<div class="outline-text-3" id="text-1-3">
+
+
+<ol>
+<li>在菜单栏选择Options→Set Default font…
+</li>
+<li>Options→Save Options保存
+</li>
+</ol>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 常用函数及变量描述</h2>
+<div class="outline-text-2" id="text-2">
+
+
+
+
+<pre class="example">describe-char 查看光标处字符所用字体
+describe-fonstset 查看各个字符集分别采用什么字体
+describie-font 产看当前所用字体描述
+describe-face 查看face的文档
+list-colors-display 显示所有颜色
+upcase-region 区域内大小写转换
+downcase-region 区域内大小写转换
+ielm 打开一个交互的elisp命令行解释器
+calc 打开计算器(采用逆波兰式计算)
+iimage-mode 显示图片
+byte-compile-file 将el代码编译为elc
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 键绑定</h2>
+<div class="outline-text-2" id="text-3">
+
+
+
+
+<pre class="example">C-x ESC ESC   : 查看历史命令;M-P选择上一条命令，M-N选择下一条命令
+M-; : 注释/反注释一块区域
+C-x k : 删除当前缓冲
+C-x h : 全选
+C-s C-w : 搜索光标处单词
+C-x C-v : 刷新缓冲区
+C-RET : CUA模式下矩形选取
+C-c C-q : 在编程模式下格式化当前函数
+C-h m : 查看当前buffer对应的主mode和副mode的文档
+C-h b : 查看当前buffer所有的快捷键列表
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> 插件相关</h2>
+<div class="outline-text-2" id="text-4">
+
+
+
+</div>
+
+<div id="outline-container-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> Desktop</h3>
+<div class="outline-text-3" id="text-4-1">
+
+
+<ul>
+<li>第一次使用desktop的时候,要运行M-x desktop-save命令
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> CEDET</h3>
+<div class="outline-text-3" id="text-4-2">
+
+
+<ul>
+<li>CEDET中的semantic，要禁用semantic-stickyfunc-mode这个模式，需要在.emacs中写(global-semantic-stickyfunc-mode nil),不然会报错“Buffer scratch was not set up for parsing”
+</li>
+<li>关于semantic-stickyfunc-mode和tabbar冲突的问题
+</li>
+</ul>
+
+
+<p class="verse">
+如果这句(setq semantic-stickyfunc-mode -1)在这句(semantic-load-enable-excessive-code-helpers)之前，则效果被覆盖，颠倒这两句的顺序则可以解决<br/>
+<b>结论</b>:配置文件语句的顺序也挺重要的<br/>
+</p>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-4-3" class="outline-3">
+<h3 id="sec-4-3"><span class="section-number-3">4.3</span> Cscope</h3>
+<div class="outline-text-3" id="text-4-3">
+
+
+<ul>
+<li>生成索引的方法
+<ol>
+<li>先建一个cscope.files文件,命令:find . -name "*.h" -o -name "*.c" -o -name "*.cc" -o -name "*.cpp" -o -name "*.hpp" &gt; cscope.files
+</li>
+<li>生成索引,命令:cscope -bkq -i cscope.files
+</li>
+</ol>
+
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-4-4" class="outline-3">
+<h3 id="sec-4-4"><span class="section-number-3">4.4</span> W3M</h3>
+<div class="outline-text-3" id="text-4-4">
+
+
+<p class="verse">
+1 先用apt-get或urpmi安装w3m<br/>
+2 到 CVS 中下载最新版本的 w3m，可以用如下代码:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co emacs-w3m<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 里面有一个 README，如果懒得看的话，运行下面代码就好了：<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ autoconf<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ ./configure<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ make<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ sudo make install<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ sudo make install-icons<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ sudo make install-icons30<br/>
+3 在.emacs加入<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (add-to-list 'load-path "usr/share/emacs/site-lisp/w3m")<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (require 'w3m)<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-4-5" class="outline-3">
+<h3 id="sec-4-5"><span class="section-number-3">4.5</span> ECB</h3>
+<div class="outline-text-3" id="text-4-5">
+
+
+<ul>
+<li>执行M-x ecb-byte-compile编译，加快ECB的运行速度
+</li>
+<li>鼠标的支持 默认情况下，使用鼠标点击ECB窗口中的内容，不起作用，并不能打开它，要回车才可以。可以在Emacs中执行“M-x ecb-customize-most-important”，找到“Ecb Primary Secondary Mouse Buttons”选项，将其设为“Primary: mouse-1, secondary: mouse-2”，并且以“Save for Future Sessions”保存
+</li>
+</ul>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> 模式相关</h2>
+<div class="outline-text-2" id="text-5">
+
+
+
+</div>
+
+<div id="outline-container-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> c模式</h3>
+<div class="outline-text-3" id="text-5-1">
+
+
+<ul>
+<li>c-toggle-auto-newline 自动换行(只要输入分号";"花括号"{","}",Emacs就会自动加上一个换行符并对新行做正确的缩进;状态行标志位(C/a))
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-5-2" class="outline-3">
+<h3 id="sec-5-2"><span class="section-number-3">5.2</span> shell模式</h3>
+<div class="outline-text-3" id="text-5-2">
+
+
+<ul>
+<li>M-P : 重复上一条命令
+</li>
+<li>C-c C-o : 清理屏幕(上一条命令输出的内容)
+</li>
+</ul>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> 小技巧</h2>
+<div class="outline-text-2" id="text-6">
+
+
+
+</div>
+
+<div id="outline-container-6-1" class="outline-3">
+<h3 id="sec-6-1"><span class="section-number-3">6.1</span> 不重新启动Emacs使.emacs的配置起作用(4选1)</h3>
+<div class="outline-text-3" id="text-6-1">
+
+
+<ul>
+<li>用 emacs 打开 .emacs 文件，C-x C-e 光标前面的运行一条语句。立即生效。
+</li>
+<li>选择一个 region , M-x eval-region
+</li>
+<li>M-x load-file ~/.emacs
+</li>
+<li>M-x eval-buffer
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-6-2" class="outline-3">
+<h3 id="sec-6-2"><span class="section-number-3">6.2</span> 在Emacs里面同时打开多个shell会话</h3>
+<div class="outline-text-3" id="text-6-2">
+
+
+<ul>
+<li>只要将当前的shell会话所在的缓冲区重新命名，然后就可以再次启动一个新的shell会话。输入 ESC-x rename-buffer，在 Rename buffer (to new name): 提示符后输入一个新名字，例如shellA；现在在任意一个窗口里面输入 ESC-x shell 启动 shell 会话，这时会看到一个新的 shell 缓冲区创建了出来，并且有了一个新的 shell 提示符
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-6-3" class="outline-3">
+<h3 id="sec-6-3"><span class="section-number-3">6.3</span> 重复命令</h3>
+<div class="outline-text-3" id="text-6-3">
+
+
+<ul>
+<li>C-num可以重复一条命令，比如C-9 *可以连续插入9个星号 如果重复次数超过9了，需要用C-u来辅助，比如C-u 60 * 来插入60个星号
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-6-4" class="outline-3">
+<h3 id="sec-6-4"><span class="section-number-3">6.4</span> 在你定制快捷键却不知道这个快捷键该如何写的时候，就让Emacs来告诉你</h3>
+<div class="outline-text-3" id="text-6-4">
+
+
+<ul>
+<li>比如你想要把 “Alt+空格”绑定到 set-mark-command 上，可是又不知道“Alt+空格”在 Emacs 里应该如何表示，并且经过试验发现“M- ”是不行的。这个时候就需要 C-h k 来帮忙了。按下 C-h k 再按下“Alt+空格”
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-6-5" class="outline-3">
+<h3 id="sec-6-5"><span class="section-number-3">6.5</span> C-h 可以当前缀用，也可以当后缀用</h3>
+<div class="outline-text-3" id="text-6-5">
+
+
+<ul>
+<li>比如矩形操作的几个快捷键不太好记，但它们都是以C-x r为前缀的，于是按下C-x r，然后再按下C-h，Emacs就会列出所有以C-x r为前缀的快捷键及对应的命令
+</li>
+</ul>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> Bug fixs</h2>
+<div class="outline-text-2" id="text-7">
+
+
+
+</div>
+
+<div id="outline-container-7-1" class="outline-3">
+<h3 id="sec-7-1"><span class="section-number-3">7.1</span> 安装问题</h3>
+<div class="outline-text-3" id="text-7-1">
+
+
+<ul>
+<li>Q:在ubuntu11.10下刚装好Emacs，启动后会出现一个Gtk-WARING:Unable to locate theme engine in module_path Solve:安装gtk2-engines-pixbuf包即可 命令:sudo apt-get install gtk2-engines-pixbuf
+</li>
+<li>Q:启动Emacs后出现** (emacs:2821): CRITICAL **: murrine_style_draw_box: assertion `height &gt;= -1' failed Solve:改变配置文件即可 sudo emacs /usr/share/themes/Ambiance/gtk-2.0/gtkrc打开后，把 GtkRange::trough-under-steppers = 0 修改为 GtkRange::trough-under-steppers = 1
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-7-2" class="outline-3">
+<h3 id="sec-7-2"><span class="section-number-3">7.2</span> Emacs中shell的乱码问题(3种解决方案)</h3>
+<div class="outline-text-3" id="text-7-2">
+
+
+<ul>
+<li>在.emacs中加(ansi-color-for-comint-mode-on)或(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+</li>
+<li>用M-x eshell代替
+</li>
+<li>用M-x ansi-term代替
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-7-3" class="outline-3">
+<h3 id="sec-7-3"><span class="section-number-3">7.3</span> Aspell</h3>
+<div class="outline-text-3" id="text-7-3">
+
+
+<ol>
+<li>Linux下
+<ol>
+<li>先检查aspell和它的字典安装好了没有,在命令行下输入$:echo "hellP, world" | aspell -a -l en测试
+</li>
+<li>在.emacs加这三句 (setq-default ispell-program-name "aspell") (ispell-change-dictionary "american" t) (setq flyspell-issue-welcome-flag nil)
+</li>
+<li>第2步任然无效的情况下参照stack-overflow删文件
+</li>
+</ol>
+
+</li>
+<li>Win下
+<ol>
+<li>M-x customize-variable RET ispell-program-name RET设置aspell.exe的路径
+</li>
+<li>(ispell-change-dictionary "american" t) (setq flyspell-issue-welcome-flag nil)
+</li>
+</ol>
+
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-7-4" class="outline-3">
+<h3 id="sec-7-4"><span class="section-number-3">7.4</span> Emacs24.1 + CEDET1.1 + ECB2.4</h3>
+<div class="outline-text-3" id="text-7-4">
+
+<p>先配置好从官网下下来的CEDET1.1，之后用elpa安装ECB2.4，启动ecb-activate，会出现一个“ecb-error: ECB 2.40 - Error: ECB can only be used with cedet [1.0pre6, 1.0.9]”这么一个错误，参考网址<a href="http://blog.csdn.net/cnsword/article/details/7474119">http://blog.csdn.net/cnsword/article/details/7474119</a> ， 把ecb-upgrade.el中的
+</p>
+
+
+<pre class="src src-elisp">      <span style="color: #61635e;">;; </span><span style="color: #6A6F63;">check if vedet-version is correct</span>
+(<span style="color: #729fcf;">when</span> (or (not (boundp 'cedet-version))
+         (ecb-package-version-list&lt;
+         (ecb-package-version-str2list cedet-version)
+          ecb-required-cedet-version-min)
+         (ecb-package-version-list&lt;
+          ecb-required-cedet-version-max
+          (ecb-package-version-str2list cedet-version)))
+ (setq version-error (concat <span style="color: #996E9E;">"cedet ["</span>
+                            cedet-required-version-str-min
+                            <span style="color: #996E9E;">", "</span>
+                            cedet-required-version-str-max
+                           <span style="color: #996E9E;">"]"</span>)))
+</pre>
+
+<p>
+注释掉后，重新byte-compile-file ecb-upgrade.el，这时再次启动ECB，会出现
+</p>
+
+
+<pre class="example">ecb-clean-up-after-activation-failure:
+ ECB 2.40: Errors during the basic setup of ECB. 
+(error-type: void-function, error-data:
+(ecb-enable-own-temp-buffer-show-futition))
+</pre>
+
+<p>
+这么一个错误，参考网址<a href="http://stackoverflow.com/questions/8833235/install-ecb-with-emacs-starter-kit-in-emacs-24">http://stackoverflow.com/questions/8833235/install-ecb-with-emacs-starter-kit-in-emacs-24</a> ，把ecb.el中的(ecb-enable-own-temp-buffer-show-futition)这句话注释掉，改为(ecb-enable-own-temp-buffer-show-function)，再次编译el，就可以成功运行ECB了
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> Elisp</h2>
+<div class="outline-text-2" id="text-8">
+
+
+<ul>
+<li>在elisp中，标识”nil”代表false，其它的一切都是true,包括0,”nil”是空链表”()”的同义词。所以”()”也是false
+</li>
+<li>load每次都会加载,require则是已经加载过了就不加载,否则就加载,autoload则是调用的时候再require
+</li>
+<li>快捷键定制
+</li>
+</ul>
+
+
+
+
+<pre class="example">(global-set-key (kbd "C-j") 'goto-line)  全局绑定 kbd是Emacs的宏, 把快捷键转换为Emacs的内部按键表示
+(define-key c++-mode-map (kbd "C-j") 'goto-line)  绑定某个mode define-key第一个参数map一般为mode后面直接加”-map”
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-9" class="outline-2">
+<h2 id="sec-9"><span class="section-number-2">9</span> org-mode</h2>
+<div class="outline-text-2" id="text-9">
+
+
+
+</div>
+
+<div id="outline-container-9-1" class="outline-3">
+<h3 id="sec-9-1"><span class="section-number-3">9.1</span> 自动补全内容元数据标记(省力啊，少打字)</h3>
+<div class="outline-text-3" id="text-9-1">
+
+
+<ul>
+<li>如在首行输入&lt;s，然后按Tab，则自动出现#+begin_src #+end_src
+</li>
+<li>如在首行输入&lt;e，然后按Tab，则自动出现#+begin_example #+end_example
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-9-2" class="outline-3">
+<h3 id="sec-9-2"><span class="section-number-3">9.2</span> 图片标记方式(5种)</h3>
+<div class="outline-text-3" id="text-9-2">
+
+
+
+
+<pre class="example">file://foo.png
+`file://foo.png'
+&lt;foo.png&gt;
+`foo.JPG'
+[[foo.gif]] 在win下导出为html形式时只有这种标记有用？
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-9-3" class="outline-3">
+<h3 id="sec-9-3"><span class="section-number-3">9.3</span> 使导出的html格式符合某种风格</h3>
+<div class="outline-text-3" id="text-9-3">
+
+
+
+
+<pre class="example">在开头加这句
+" #+STYLE: &lt;link rel="stylesheet" type="text/css" href="http://files.cnblogs.com/csophys/orgstyle.css" /&gt; "
+参考网址 http://www.cnblogs.com/csophys/archive/2012/04/02/2429497.html
+       http://blog.csdn.net/pfanaya/article/details/7713743
+</pre>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-10" class="outline-2">
+<h2 id="sec-10"><span class="section-number-2">10</span> Misc</h2>
+<div class="outline-text-2" id="text-10">
+
+
+</div>
+
+<div id="outline-container-10-1" class="outline-3">
+<h3 id="sec-10-1"><span class="section-number-3">10.1</span> 几个好玩的模式</h3>
+<div class="outline-text-3" id="text-10-1">
+
+
+
+
+<pre class="example">zone butterfly morse-region glasses-mode gomoku pong
+</pre>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-11" class="outline-2">
+<h2 id="sec-11"><span class="section-number-2">11</span> FAQ</h2>
+<div class="outline-text-2" id="text-11">
+
+
+<p class="verse">
+Q:win下，site-lisp和lisp这两个目录都是做什么用的呢？<br/>
+A:惯例吧，lisp放emacs自带的，site-lisp放你的<br/>
+<br/>
+Q:load和require加载配置文件的区别<br/>
+A:用load加载配置文件的话，不需要配置文件做特殊处理<br/>
+&nbsp;&nbsp;&nbsp;&nbsp; 用require的话，在配置文件中，必须要有provide处理，这样才能加载相关插件，如：<br/>
+&nbsp;&nbsp;&nbsp;&nbsp; 在global-settings.el的最后，需要加上(provide 'global-settings)<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-12" class="outline-2">
+<h2 id="sec-12"><span class="section-number-2">12</span> 血的教训</h2>
+<div class="outline-text-2" id="text-12">
+
+<ul>
+<li>设置Emacs文件系统的编码格式 <a href="http://www.cnblogs.com/waterlin/archive/2009/11/06/1670298.html">http://www.cnblogs.com/waterlin/archive/2009/11/06/1670298.html</a>
+  重装系统后，Emacs 打开以前的文件，都显示为乱码，着实吓了我一跳。这个时候千万不要慌张，也不要随便地保存乱码的文件。 其实这只是 Emacs 读取文件的编码格式与你的文件格式不一样。我们可以用 M-x describe-coding-system 这个命令来查看一下 Emacs 是用什么编码来读取当前文件的。 比如说我的 org 文件都是用 UTF-8 来保存的，而打开某个 org 文件显示乱码，用命令 M-x describe-coding-system 显示当前解读的编码为： 1 &ndash; iso-latin-1-unix (alias: iso-8859-1-unix latin-1-unix) Emacs 错把 UTF-8 的编码解读成了 latin 编码格式，难怪会乱码！ 这个时候，有两种解决办法。 把 Emacs 的默认编码设置为 UTF-8。 在 .emacs 文件里放入下面这段代码： ;; set the default text coding system (setq default-buffer-file-coding-system [&hellip;]
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-13" class="outline-2">
+<h2 id="sec-13"><span class="section-number-2">13</span> 有待折腾</h2>
+<div class="outline-text-2" id="text-13">
+
+
+</div>
+
+<div id="outline-container-13-1" class="outline-3">
+<h3 id="sec-13-1"><span class="section-number-3">13.1</span> anything</h3>
+<div class="outline-text-3" id="text-13-1">
+
+</div>
+
+</div>
+
+<div id="outline-container-13-2" class="outline-3">
+<h3 id="sec-13-2"><span class="section-number-3">13.2</span> ecb</h3>
+<div class="outline-text-3" id="text-13-2">
+
+</div>
+
+</div>
+
+<div id="outline-container-13-3" class="outline-3">
+<h3 id="sec-13-3"><span class="section-number-3">13.3</span> cscope</h3>
+<div class="outline-text-3" id="text-13-3">
+
+</div>
+
+</div>
+
+<div id="outline-container-13-4" class="outline-3">
+<h3 id="sec-13-4"><span class="section-number-3">13.4</span> gtags</h3>
+<div class="outline-text-3" id="text-13-4">
+
+</div>
+
+</div>
+
+<div id="outline-container-13-5" class="outline-3">
+<h3 id="sec-13-5"><span class="section-number-3">13.5</span> htags</h3>
+<div class="outline-text-3" id="text-13-5">
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-14" class="outline-2">
+<h2 id="sec-14"><span class="section-number-2">14</span> 参考资料</h2>
+<div class="outline-text-2" id="text-14">
+
+
+<ul>
+<li>定制 Emacs 的字体 <a href="http://lifegoo.pluskid.org/wiki/EmacsAndFont.html">http://lifegoo.pluskid.org/wiki/EmacsAndFont.html</a>
+</li>
+<li>如何设置让 Org Mode 在默认情况下，不转义 _ 字符 <a href="http://www.cnblogs.com/waterlin/archive/2011/10/09/2203996.html">http://www.cnblogs.com/waterlin/archive/2011/10/09/2203996.html</a>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2012-09-06 10:30:30 中国标准时间</p>
+<p class="author">Author: wyj</p>
+<p class="creator">Org version 7.8.11 with Emacs version 24</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>

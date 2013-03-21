@@ -1,0 +1,32 @@
+* 安装编译器，为了齐全还是安装一下build-essential
+  sudo apt-get install build-essential
+* 下载源代码并解压
+  地址http://www.ituring.com.cn/book/164
+* 参考README编译源代码
+  #+begin_example
+  ./configure
+  cd lib
+  make
+  #+end_example
+  最终目的是要得到libunp.a
+* 将生成的libunp.a静态库复制到/usr/lib/中
+  #+begin_example
+  cd ..   //回到unpv12e目录
+  sudo cp libunp.a /usr/lib
+  #+end_example
+* 修改unp.h并将其和config.h拷贝到/usr/include中，为了以后include方便
+  #+begin_example
+  gedit lib/unp.h   //将unp.h中#include "../config.h"修改为#include "config.h"
+  sudo cp lib/unp.h /usr/include
+  sudo cp config.h /usr/include
+  #+end_example
+  方法2参考网址2
+* 编译源代码
+  #+begin_example
+  cd ./intro  
+  gcc daytimetcpcli.c -o daytimetcpcli -lunp
+  #+end_example
+  跟普通的编译不一样的是要在最后加上刚才那个链接库，-l参数加上刚才那个libunp.a去掉lib和后面的.a。最后得到参数-lunp
+* 参考资料
+  - http://blog.csdn.net/a649518776/article/details/6724121
+  - http://www.cnblogs.com/shenlian/archive/2011/08/19/2146190.html

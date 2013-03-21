@@ -1,0 +1,32 @@
+#+TITLE: VirtualBox下虚拟机互连组建网络
+#+AUTHOR: wyj
+#+EMAIL: rs@whu.edu.cn
+#+KEYWORDS: VirualBox, ubuntu, 网络
+#+OPTIONS: H:2 toc:t ^:{}
+#+STYLE: <link rel="stylesheet" type="text/css" href="./style/style.css" />
+
+* 前言
+看《Understanding Unix/Linux Programming》一书，第11章和第12章涉及网络编程部分，因为条件的限制，只有一台主机，因此用VirtualBox建了2个Ubuntu虚拟机，一台用来做服务器，一台用来做客户端，但是它们之间的通信成了问题，最后查了半天资料，发现在虚拟机的网络设置里用Host-only可行
+* 配置环境
+主机：win7
+虚拟机服务器：ubuntu10.04
+虚拟机客户端：ubuntu12.04
+VirtualBox版本：4.1.18
+* 方法
+  - 为两台虚拟主机分别增加一个Host-only网卡，不用更改设置，保持默认即可
+  - 在服务器上，调用命令ifconfig查看新增加网卡的IP地址，这个地址一会用客户端的ping来测试，看是否可以连接
+  - 在客户端上，调用命令ifconfig查看新增加网卡的IP地址，这个地址一会用服务器的ping来测试，看是否可以连接
+* 与网络有关的命令
+** ping
+** ipconfig 显示网卡信息(win)
+** ifconfig 显示网卡信息(*nix)
+* 注意
+有时用其他主机ping win的主机会失败，是因为win下开着防火墙的原因，关掉就好了
+* 连接后的工作
+两台主机连接后，通过ssh访问后会出现“ssh: connect to host 192.168.56.102 port 22: Connection refused”提示，还需要在本机的/etc/hosts.allow中进行如下设置：
+#+begin_example
+sshd:192.168.56.102 #对方IP地址
+#+end_example
+切换到客户机时，运行命令 ssh 192.168.56.103(主机IP)与主机相连，发现只有root用户才可以访问，不知道是不是因为allow中设置方式为IP地址导致
+* 参考资料
+http://www.2cto.com/os/201205/133370.html

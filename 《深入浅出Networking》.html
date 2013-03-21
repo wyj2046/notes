@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>《深入浅出Networking》</title>
+<meta http-equiv="Content-Type" content="text/html;charset=gbk"/>
+<meta name="title" content="《深入浅出Networking》"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-10-09 19:41:10 中国标准时间"/>
+<meta name="author" content="wyj"/>
+<meta name="description" content=""/>
+<meta name="keywords" content="emacs, notes"/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="./style/style.css" />
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">《深入浅出Networking》</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 chp4</a>
+<ul>
+<li><a href="#sec-1-1">1.1 p145</a></li>
+<li><a href="#sec-1-2">1.2 p153</a></li>
+<li><a href="#sec-1-3">1.3 p154</a></li>
+<li><a href="#sec-1-4">1.4 p162</a></li>
+<li><a href="#sec-1-5">1.5 p164</a></li>
+<li><a href="#sec-1-6">1.6 p168</a></li>
+<li><a href="#sec-1-7">1.7 p169</a></li>
+<li><a href="#sec-1-8">1.8 p170</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2 chp5</a>
+<ul>
+<li><a href="#sec-2-1">2.1 p181</a></li>
+<li><a href="#sec-2-2">2.2 p184</a></li>
+<li><a href="#sec-2-3">2.3 p186</a></li>
+<li><a href="#sec-2-4">2.4 p199</a></li>
+<li><a href="#sec-2-5">2.5 p200</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3 chp6</a>
+<ul>
+<li><a href="#sec-3-1">3.1 p211</a></li>
+<li><a href="#sec-3-2">3.2 p214</a></li>
+<li><a href="#sec-3-3">3.3 p215</a></li>
+<li><a href="#sec-3-4">3.4 p216</a></li>
+<li><a href="#sec-3-5">3.5 p218</a></li>
+<li><a href="#sec-3-6">3.6 p222</a></li>
+<li><a href="#sec-3-7">3.7 p223</a></li>
+<li><a href="#sec-3-8">3.8 p227</a></li>
+<li><a href="#sec-3-9">3.9 p254</a></li>
+<li><a href="#sec-3-10">3.10 p257</a></li>
+<li><a href="#sec-3-11">3.11 p264</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4 chp8</a>
+<ul>
+<li><a href="#sec-4-1">4.1 p293</a></li>
+<li><a href="#sec-4-2">4.2 p294</a></li>
+<li><a href="#sec-4-3">4.3 p321</a></li>
+</ul>
+</li>
+<li><a href="#sec-5">5 chp10</a>
+<ul>
+<li><a href="#sec-5-1">5.1 p374</a></li>
+<li><a href="#sec-5-2">5.2 p380</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> chp4</h2>
+<div class="outline-text-2" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> p145</h3>
+<div class="outline-text-3" id="text-1-1">
+
+<p>   十六进制与二进制之间有着天然的联系，它大大简化了从二进制到ASCII码的转换过程。十六进制好比一座桥梁，将晦涩难懂的二进制世界与我们的世界连接起来
+</p></div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> p153</h3>
+<div class="outline-text-3" id="text-1-2">
+
+
+<p class="verse">
+大多数协议规定了消息长度的上限。也就是说原始的消息必须分割成多组消息，打包发送。<br/>
+消息被打包成两种格式：数据帧(frame)和数据包(packet)<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> p154</h3>
+<div class="outline-text-3" id="text-1-3">
+
+
+<p class="verse">
+数据帧的逻辑结构方便所有的网络设备读取其中的信息。<br/>
+数据帧内部包含着数据包，数据包才是真正的有效信息。<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-4" class="outline-3">
+<h3 id="sec-1-4"><span class="section-number-3">1.4</span> p162</h3>
+<div class="outline-text-3" id="text-1-4">
+
+
+<p class="verse">
+数据包种类很多。每种数据包都包含了若干信息单位。<br/>
+这些信息单位称为字段(field)，字段包含了与数据包通信相关的信息。<br/>
+有些字段是各种数据包通用的。<br/>
+</p>
+
+
+<ul>
+<li id="sec-1-4-1">UDP数据包<br/>
+
+<p class="verse">
+UDP用于传输流数据，比如音乐和视频<br/>
+</p>
+
+
+</li>
+</ul>
+<ul>
+<li id="sec-1-4-2">ICMP数据包<br/>
+
+<p class="verse">
+ICMP用来测试网络连接状态，使用Ping命令时会用到它<br/>
+</p>
+
+
+</li>
+</ul>
+<ul>
+<li id="sec-1-4-3">TCP数据包<br/>
+
+<p class="verse">
+TCP用于在IP网络上进行可靠的数据通信。<br/>
+这里“可靠”的含义是指信息不会丢失<br/>
+</p>
+
+
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-5" class="outline-3">
+<h3 id="sec-1-5"><span class="section-number-3">1.5</span> p164</h3>
+<div class="outline-text-3" id="text-1-5">
+
+
+<p class="verse">
+问题：数据包和数据帧不是一回事吗？<br/>
+回答：不是的。在以太网上传输的是数据帧。数据帧内的负载数据才是数据包。<br/>
+通常数据帧必须遵守某一传输协议，比如以太网协议、异步传输模式(ATM)协议、令牌环(Token Ring)协议等<br/>
+问题：数据包和数据报(datagram)是一回事吗？<br/>
+回答：它们不完全是一回事。<br/>
+数据包泛指所有用数据包传输的数据。<br/>
+数据报也是一种数据包，它特指用不可靠协议(比如UDP协议、ICMP协议)传输的数据包<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-6" class="outline-3">
+<h3 id="sec-1-6"><span class="section-number-3">1.6</span> p168</h3>
+<div class="outline-text-3" id="text-1-6">
+
+
+<p class="verse">
+消息有时被分装在许多数据帧里，这是为什么呢？<br/>
+1. 单个以太网数据帧最多只能装下1500字节的数据。如果发送数据大于1500字节，就必须分多次传输。<br/>
+2. 为了实现可靠的数据传输，发送方和接收方会使用TCP协议来沟通传输情况。一旦接收方收到出错的数据包，发送方会重新发送。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 如果所有的数据都装在一个数据包里，在网络不稳定的情况下，数据也许永远没法成功发送出去。<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-7" class="outline-3">
+<h3 id="sec-1-7"><span class="section-number-3">1.7</span> p169</h3>
+<div class="outline-text-3" id="text-1-7">
+
+
+<p class="verse">
+由于网络中有许多路由器，每个数据包可能选择不同的路径到达目的地。如果数据包选择了距离较远或带宽较低的路径，就会较迟到达目的地。<br/>
+也就是说，数据包到达终点的顺序可能与出发的顺序不同<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-8" class="outline-3">
+<h3 id="sec-1-8"><span class="section-number-3">1.8</span> p170</h3>
+<div class="outline-text-3" id="text-1-8">
+
+
+<p class="verse">
+每个数据包都携带了一个编号，就是存放在序列号字段中的数字。<br/>
+只要将数据包的编号从小到大排列，就能还原正确地顺序<br/>
+</p>
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> chp5</h2>
+<div class="outline-text-2" id="text-2">
+
+
+</div>
+
+<div id="outline-container-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> p181</h3>
+<div class="outline-text-3" id="text-2-1">
+
+
+<p class="verse">
+<b>网络不仅仅是由计算机组成的</b><br/>
+公司的网络不仅仅由计算机和服务器组成，还包括集线器(hub)、交换机(switch)、路由器(router)等网络设备。<br/>
+集线器、交换机用于连接局域网或内部网，路由器用于连接广域网或互联网<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> p184</h3>
+<div class="outline-text-3" id="text-2-2">
+
+
+<p class="verse">
+集线器只是一台中继设备。无论接收到什么信号，它都原封不动地转发给所有端口。<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> p186</h3>
+<div class="outline-text-3" id="text-2-3">
+
+
+<p class="verse">
+交换机可以讲信号解读成数据帧，并利用数据帧包含的信息，将其转发到对应的端口。<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2-4" class="outline-3">
+<h3 id="sec-2-4"><span class="section-number-3">2.4</span> p199</h3>
+<div class="outline-text-3" id="text-2-4">
+
+
+<p class="verse">
+路由器与计算机一样，拥有自己的MAC地址。如果密电是通过路由器发送的，我们就只能追查到路由器。<br/>
+路由器后面的计算机组成一个IP子网。<br/>
+路由器的作用是连接不同的IP子网。<br/>
+交换机只能根据数据帧的目的MAC地址发送数据帧，它不能跨IP子网工作；<br/>
+而路由器可以解读接收到的数据包，根据数据包的目的IP地址转发数据包，因而它可以跨IP子网工作<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2-5" class="outline-3">
+<h3 id="sec-2-5"><span class="section-number-3">2.5</span> p200</h3>
+<div class="outline-text-3" id="text-2-5">
+
+
+<p class="verse">
+路由器的端口数比交换机要少，因为它主要负责连接IP子网，而交换机主要负责连接计算机<br/>
+计算机通常不会直接连接到路由器<br/>
+</p>
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> chp6</h2>
+<div class="outline-text-2" id="text-3">
+
+
+</div>
+
+<div id="outline-container-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> p211</h3>
+<div class="outline-text-3" id="text-3-1">
+
+
+<p class="verse">
+连接两个网络必须使用路由器。路由器担任两个网络的“翻译”；交换机功能太简单，胜任不了这项工作。<br/>
+路由器“翻译”网络IP地址。两个网络就像两个城市，路由器负责把一个网络的数据顺利传往另一个网络<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> p214</h3>
+<div class="outline-text-3" id="text-3-2">
+
+
+<p class="verse">
+MAC地址是硬件唯一的标示符，但是MAC地址不包含网络位置信息<br/>
+IP地址可以分成两个部分：网段地址和主机地址。网段地址用来区分不同的网络，主机地址用于在同一网段内区分不同的主机。<br/>
+IP地址本身带有分组信息，方便组成IP网络。<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> p215</h3>
+<div class="outline-text-3" id="text-3-3">
+
+
+<p class="verse">
+IP地址的网段地址构成地址空间，让不同的网络相互通信，相当于电话号码中区号的作用。<br/>
+IP地址的主机地址则用来在该网段中唯一标识主机(节点)。<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3-4" class="outline-3">
+<h3 id="sec-3-4"><span class="section-number-3">3.4</span> p216</h3>
+<div class="outline-text-3" id="text-3-4">
+
+
+<p class="verse">
+<b>地址解析协议(Address Resolution Protocol, ARP)实现IP地址到MAC地址的转换</b><br/>
+如果TCP/IP网络上的节点希望通过交换机向某一IP地址发送数据，必须先知道该IP地址对应的MAC地址。这就要用到ARP协议<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3-5" class="outline-3">
+<h3 id="sec-3-5"><span class="section-number-3">3.5</span> p218</h3>
+<div class="outline-text-3" id="text-3-5">
+
+
+<p class="verse">
+问题：我原以为只要知道对方的MAC地址就能向他发送消息<br/>
+回答：在以太网内部确实是这样，以太网数据帧里含有各种协议的数据包。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 但是TCP/IP网络是可以跨越多个以太网通信的， <b>跨网通信必须使用IP地址</b><br/>
+问题：我的计算机已经分配到IP地址，还要MAC地址做什么？<br/>
+回答：计算机使用的网络协议不止一种。它用IP地址与其他网络的计算机通信；用MAC地址与局域网内的计算机通信。<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3-6" class="outline-3">
+<h3 id="sec-3-6"><span class="section-number-3">3.6</span> p222</h3>
+<div class="outline-text-3" id="text-3-6">
+
+
+<p class="verse">
+<b>局域网有一个默认的网关，这个网关就是路由器的IP地址。所有发往网外的数据都默认发给网关，即路由器</b><br/>
+交换机根据MAC地址转发数据<br/>
+路由器根据IP地址转发数据<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3-7" class="outline-3">
+<h3 id="sec-3-7"><span class="section-number-3">3.7</span> p223</h3>
+<div class="outline-text-3" id="text-3-7">
+
+
+<p class="verse">
+<b>记住，交换机只能理解MAC地址</b><br/>
+以太网交换机只能读取数据帧的MAC地址，它不能修改数据帧<br/>
+路由器要把数据包从数据帧里提取出来，读取其中的IP地址。<br/>
+如果数据时发往另一个网络的，路由器还要修改数据帧的目的MAC地址和源MAC地址，然后再将数据帧转发出去<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3-8" class="outline-3">
+<h3 id="sec-3-8"><span class="section-number-3">3.8</span> p227</h3>
+<div class="outline-text-3" id="text-3-8">
+
+
+<p class="verse">
+子网掩码用来指定IP地址中网段地址的长度。<br/>
+路由器借助IP地址和子网掩码来选择路由<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3-9" class="outline-3">
+<h3 id="sec-3-9"><span class="section-number-3">3.9</span> p254</h3>
+<div class="outline-text-3" id="text-3-9">
+
+
+<p class="verse">
+问题：路由器端口是指什么？<br/>
+回答：端口是路由器的物理网络接口，可以是RJ-45接口、串行接口、光缆接口<br/>
+问题：路由器端口名称中的0/0、0/1代表什么？<br/>
+回答：有些路由器装有多块网卡，每个网卡上又有多个端口。第1个数字代表路由器中的某种网卡，第2个数字代表该网卡上的某个端口。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 例如0/1代表0号网卡上的1号端口。<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3-10" class="outline-3">
+<h3 id="sec-3-10"><span class="section-number-3">3.10</span> p257</h3>
+<div class="outline-text-3" id="text-3-10">
+
+
+<p class="verse">
+traceroute命令也向目的IP地址发送数据包，它记录沿途经过的路由器IP地址。<br/>
+traceroute命令返回的结果是从发送发到接收方之间的完整路由信息(途径路由器的IP地址)<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3-11" class="outline-3">
+<h3 id="sec-3-11"><span class="section-number-3">3.11</span> p264</h3>
+<div class="outline-text-3" id="text-3-11">
+
+
+<p class="verse">
+<b>利用RIP协议自动更新路由表</b><br/>
+路由信息协议(Routing Information Protocol, RIP)就是一种动态路由协议。<br/>
+RIP协议可以用来共享网络地址。路由器可以利用它相互交换路由信息，定期更新路由表<br/>
+</p>
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> chp8</h2>
+<div class="outline-text-2" id="text-4">
+
+
+</div>
+
+<div id="outline-container-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> p293</h3>
+<div class="outline-text-3" id="text-4-1">
+
+
+<p class="verse">
+www.hfhealthclub.com中的www是主机名，用来指明域中的服务器<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> p294</h3>
+<div class="outline-text-3" id="text-4-2">
+
+
+<p class="verse">
+不要混淆了域名和网站名。严格来说，hfhealthclub.com是域名，www.hfhealthclub.com是网站名<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-4-3" class="outline-3">
+<h3 id="sec-4-3"><span class="section-number-3">4.3</span> p321</h3>
+<div class="outline-text-3" id="text-4-3">
+
+
+<p class="verse">
+DNS服务器允许把一个域名捆绑到多个IP地址上。<br/>
+这样像Google这样的大公司就可以让成千上万台服务器共用www.google.com这个域名了<br/>
+</p>
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> chp10</h2>
+<div class="outline-text-2" id="text-5">
+
+
+</div>
+
+<div id="outline-container-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> p374</h3>
+<div class="outline-text-3" id="text-5-1">
+
+
+<p class="verse">
+DHCP是动态主机配置协议(Dynamic Host Configuration Protocol)的英文缩写<br/>
+它允许网络设备自动连接无线接入点获取IP地址，无须手动设置<br/>
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-5-2" class="outline-3">
+<h3 id="sec-5-2"><span class="section-number-3">5.2</span> p380</h3>
+<div class="outline-text-3" id="text-5-2">
+
+
+<p class="verse">
+NAT是网络地址转换(Network Address Translation)的英文缩写。<br/>
+它可以为无线接入点提供更多的IP地址。<br/>
+有了NAT，想要多少IP地址都不愁<br/>
+</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2012-10-09 19:41:10 中国标准时间</p>
+<p class="author">Author: wyj</p>
+<p class="creator">Org version 7.8.11 with Emacs version 24</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>

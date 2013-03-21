@@ -1,0 +1,27 @@
+#+TITLE: git依赖模块添加方法
+#+AUTHOR: wyj
+#+EMAIL: rs@whu.edu.cn
+#+KEYWORDS: git, notes
+#+OPTIONS: H:2 toc:t ^:{}
+#+STYLE: <link rel="stylesheet" type="text/css" href="./style/style.css" />
+* 在A机器上为项目添加第三方子模块
+  #+BEGIN_VERSE
+  用命令git submodule add git://url添加第三方子模块，如
+  git submodule add git://github.com/dimitri/el-get.git
+  注意，不要用命令git clone https://url 添加第三方子模块
+  注意这个地方url使用的协议是git，用https和ssh都不行
+  #+END_VERSE
+  此时多了一个.gitmodules文件，可以cat一下，发现它记录了每个submodule的引用信息，知道在当前项目的位置以及仓库的所在。
+* 在B机器上clone第三方子模块
+  #+BEGIN_VERSE
+  当用普通的git clone https://url 命令clone完repository后发现，依赖于第三方的子模块目录下内容是空的，
+  此时需要用submodule命令clone下来，在有.gitmodules文件的目录下(一般是自己的repository根目录)，用命令
+  git submodule init
+  git submodule update
+  来clone第三方子模块
+  #+END_VERSE  
+* 参考资料
+** http://www.cnblogs.com/york-hust/archive/2012/01/14/2322460.html
+** http://www.kafeitu.me/git/2012/03/27/git-submodule.html
+** https://help.github.com/articles/using-submodules-with-pages
+** http://git-scm.com/book/en/Git-Tools-Submodules

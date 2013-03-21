@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>VirtualBox下虚拟机互连组建网络</title>
+<meta http-equiv="Content-Type" content="text/html;charset=gbk"/>
+<meta name="title" content="VirtualBox下虚拟机互连组建网络"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-08-02 14:38:09 中国标准时间"/>
+<meta name="author" content="wyj"/>
+<meta name="description" content=""/>
+<meta name="keywords" content="VirualBox, ubuntu, 网络"/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="./style/style.css" />
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">VirtualBox下虚拟机互连组建网络</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 前言</a></li>
+<li><a href="#sec-2">2 配置环境</a></li>
+<li><a href="#sec-3">3 方法</a></li>
+<li><a href="#sec-4">4 与网络有关的命令</a>
+<ul>
+<li><a href="#sec-4-1">4.1 ping</a></li>
+<li><a href="#sec-4-2">4.2 ipconfig 显示网卡信息(win)</a></li>
+<li><a href="#sec-4-3">4.3 ifconfig 显示网卡信息(*nix)</a></li>
+</ul>
+</li>
+<li><a href="#sec-5">5 注意</a></li>
+<li><a href="#sec-6">6 参考资料</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 前言</h2>
+<div class="outline-text-2" id="text-1">
+
+<p>看《Understanding Unix/Linux Programming》一书，第11章和第12章涉及网络编程部分，因为条件的限制，只有一台主机，因此用VirtualBox建了2个Ubuntu虚拟机，一台用来做服务器，一台用来做客户端，但是它们之间的通信成了问题，最后查了半天资料，发现在虚拟机的网络设置里用Host-only可行
+</p></div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 配置环境</h2>
+<div class="outline-text-2" id="text-2">
+
+<p>主机：win7
+虚拟机服务器：ubuntu10.04
+虚拟机客户端：ubuntu12.04
+VirtualBox版本：4.1.18
+</p></div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 方法</h2>
+<div class="outline-text-2" id="text-3">
+
+<ul>
+<li>为两台虚拟主机分别增加一个Host-only网卡，不用更改设置，保持默认即可
+</li>
+<li>在服务器上，调用命令ifconfig查看新增加网卡的IP地址，这个地址一会用客户端的ping来测试，看是否可以连接
+</li>
+<li>在客户端上，调用命令ifconfig查看新增加网卡的IP地址，这个地址一会用服务器的ping来测试，看是否可以连接
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> 与网络有关的命令</h2>
+<div class="outline-text-2" id="text-4">
+
+
+</div>
+
+<div id="outline-container-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> ping</h3>
+<div class="outline-text-3" id="text-4-1">
+
+</div>
+
+</div>
+
+<div id="outline-container-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> ipconfig 显示网卡信息(win)</h3>
+<div class="outline-text-3" id="text-4-2">
+
+</div>
+
+</div>
+
+<div id="outline-container-4-3" class="outline-3">
+<h3 id="sec-4-3"><span class="section-number-3">4.3</span> ifconfig 显示网卡信息(*nix)</h3>
+<div class="outline-text-3" id="text-4-3">
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> 注意</h2>
+<div class="outline-text-2" id="text-5">
+
+<p>有时用其他主机ping win的主机会失败，是因为win下开着防火墙的原因，关掉就好了
+</p></div>
+
+</div>
+
+<div id="outline-container-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> 参考资料</h2>
+<div class="outline-text-2" id="text-6">
+
+<p><a href="http://www.2cto.com/os/201205/133370.html">http://www.2cto.com/os/201205/133370.html</a>
+</p></div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2012-08-02 14:38:09 中国标准时间</p>
+<p class="author">Author: wyj</p>
+<p class="creator">Org version 7.8.11 with Emacs version 24</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>

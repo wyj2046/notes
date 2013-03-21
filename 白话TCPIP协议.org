@@ -1,0 +1,30 @@
+#+TITLE: 《白话TCP/IP协议》
+#+AUTHOR: wyj
+#+EMAIL: rs@whu.edu.cn
+#+KEYWORDS: emacs, notes
+#+OPTIONS: H:2 toc:t ^:{}
+#+STYLE: <link rel="stylesheet" type="text/css" href="./style/style.css" />
+* 参考网址：http://www.2cto.com/net/201112/114208.html
+* 三次握手
+** 第一次握手：建立连接时，客户端A发送SYN包(SYN=j)到服务器B，并进入SYN_SEND状态，等待服务器B确认
+   A想B请求连接
+** 第二次握手：服务器B收到SYN包，必须确认客户A的SYN(ACK=j+1)，同时自己也发送一个SYN包(SYN=k)，即SYN+ACK包，此时服务器进入SYN_RECV状态
+   B回应A：好的，你来吧
+** 第三次握手：客户端A收到服务器B的SYN+ACK包，向服务器B发送确认包ACK(ACK=k+1)，此包发送完毕，客户端A和服务器B进入ESTABLISHED状态，完成三次握手
+   A回应B：好的，我来也
+* 四次分手
+** 客户端A发送一个FIN，用来关闭客户A到服务器B的数据传送
+   A对B说：我传完了
+** 服务器B收到这个FIN，它发回一个ACK，确认序号为收到的序号加1。和SYN一样，一个FIN将占用一个序号
+   B回应A：好的
+** 服务器B关闭与客户端A的连接，发送一个FIN给客户端A
+   B对A说：我传完了too
+** 客户端A发回ACK报文确认，并将确认序号设置为收到序号加1
+   A回应B：好的，我走了
+* 为什么建立连接协议是三次握手，而关闭连接却是四次握手呢？
+#+BEGIN_VERSE
+这是因为服务端的LISTEN状态下的SOCKET当收到SYN报文的连接请求后，它可以把ACK和SYN(ACK起应答作用，而SYN起同步作用)放在一个报文里来发送。
+但关闭连接时，当收到双方的FIN报文通知时，它仅仅表示对方没有数据发送给你了；
+*但未必你所有的数据都全部发送给对方了* ，所以你可能未必会马上关闭SOCKET，
+也即你可能还需要发送一些数据给对方之后，再发送FIN报文给对方来表示你同意现在可以关闭连接了，所以它这里的ACK报文和FIN报文多数情况下都是分开发送的
+#+END_VERSE

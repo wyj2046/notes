@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>win7+Apache2.2+PHP5.3+MySQL5.6环境搭建</title>
+<meta http-equiv="Content-Type" content="text/html;charset=gbk"/>
+<meta name="title" content="win7+Apache2.2+PHP5.3+MySQL5.6环境搭建"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-03-17 19:31:27 中国标准时间"/>
+<meta name="author" content="wyj"/>
+<meta name="description" content=""/>
+<meta name="keywords" content="LAMP, notes"/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="./style/style.css" />
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">win7+Apache2.2+PHP5.3+MySQL5.6环境搭建</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 准备工作</a></li>
+<li><a href="#sec-2">2 Apache安装配置</a></li>
+<li><a href="#sec-3">3 PHP安装配置</a></li>
+<li><a href="#sec-4">4 MySQL安装配置</a></li>
+<li><a href="#sec-5">5 参考资料</a>
+<ul>
+<li><a href="#sec-5-1">5.1 http://tech.163.com/06/0206/11/299AMBLT0009159K.html</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 准备工作</h2>
+<div class="outline-text-2" id="text-1">
+
+<ol>
+<li>在某盘下新建目录www，用来存放Apache,PHP(非必须)
+</li>
+<li>下载httpd-2.2.22-win32-x86-no_ssl.msi，该程序为Apache2.2
+</li>
+<li>下载php-5.3.23-Win32-VC9-x86.zip，该压缩包为PHP5.3源码，因为安装包会产生各种奇怪的问题，所以这里不用安装包的方式
+</li>
+<li>下载mysql-installer-community-5.6.10.1.msi，该程序为MySQL5.6
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Apache安装配置</h2>
+<div class="outline-text-2" id="text-2">
+
+<ol>
+<li>一路下一步默认配置即可
+</li>
+<li>在Server Information中Network Domain中填wyj2046.com，Server Name中填www.wyj2046.com，邮箱中填自己的邮箱
+</li>
+<li>在Setup Type中选择Custom
+</li>
+<li>在Custom Setup中单击Apache HTTP Server 2.2.22的下黑色三角，选择第二个(即安装所有组件)，改变安装路径到www,如这样F:\www\Apache2.2\
+</li>
+<li>Finish后，在浏览器中输入<a href="http://localhost">http://localhost</a> 有反应就是安装成功并开启Apache了
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> PHP安装配置</h2>
+<div class="outline-text-2" id="text-3">
+
+<ol>
+<li>在www下目录下新建目录PHP
+</li>
+<li>将php-5.3.23-Win32-VC9-x86.zip的所有内容解压缩到上一步中的PHP目录中去
+</li>
+<li>将php.ini-development重命名为php.ini
+</li>
+<li>编辑php.ini，找到有mysql的那一行，把该行和下一行前的分号都删掉，即变为
+
+<p class="verse">
+extension=php_mysql.dll<br/>
+extension=php_mysqli.dll<br/>
+</p>
+
+
+</li>
+<li>设置windoes环境变量，使apache能找到php的模块；为环境变量里的Path变量增加值"F:\www\PHP;F:\www\PHP\ext"，重启后该步骤生效
+</li>
+<li>编辑httpd.conf文件，找到LoadModule，在最下面增加两行
+
+<p class="verse">
+LoadModule php5_module F:/www/PHP/php5apache2_2.dll<br/>
+PHPIniDir "F:/www/PHP"    <br/>
+</p>
+
+
+</li>
+<li>找到AddType，在最下面增加两行
+
+<p class="verse">
+AddType application/x-httpd-php .php<br/>
+AddType application/x-httpd-php .html    <br/>
+</p>
+
+
+</li>
+<li>找到DirectoryIndex，在后面增加index.php index.html index.html.var
+</li>
+<li>保存httpd.conf文件，重启apache服务器，即可支持php
+</li>
+<li>新建info.php文件，里面写上  &lt;?php phpinfo(); ?&gt;  把info.php放到F:\www\Apache2.2\htdocs里，打开浏览器，输入<a href="http://localhost/info.php">http://localhost/info.php</a> ，即可查看PHP版本号(同时也验证了是否配置好Apache和PHP)
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> MySQL安装配置</h2>
+<div class="outline-text-2" id="text-4">
+
+<p>  这个没啥说的，一路下一步即可，注意选择安装路径，同时记得设密码-.-
+</p></div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> 参考资料</h2>
+<div class="outline-text-2" id="text-5">
+
+
+</div>
+
+<div id="outline-container-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> <a href="http://tech.163.com/06/0206/11/299AMBLT0009159K.html">http://tech.163.com/06/0206/11/299AMBLT0009159K.html</a></h3>
+<div class="outline-text-3" id="text-5-1">
+
+</div>
+</div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2013-03-17 19:31:27 中国标准时间</p>
+<p class="author">Author: wyj</p>
+<p class="creator">Org version 7.8.11 with Emacs version 24</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>

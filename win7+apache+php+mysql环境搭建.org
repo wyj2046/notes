@@ -1,0 +1,44 @@
+#+TITLE: win7+Apache2.2+PHP5.3+MySQL5.6环境搭建
+#+AUTHOR: wyj
+#+EMAIL: rs@whu.edu.cn
+#+KEYWORDS: LAMP, notes
+#+OPTIONS: H:2 toc:t ^:{}
+#+STYLE: <link rel="stylesheet" type="text/css" href="./style/style.css" />
+* 准备工作
+  1) 在某盘下新建目录www，用来存放Apache,PHP(非必须)
+  2) 下载httpd-2.2.22-win32-x86-no_ssl.msi，该程序为Apache2.2
+  3) 下载php-5.3.23-Win32-VC9-x86.zip，该压缩包为PHP5.3源码，因为安装包会产生各种奇怪的问题，所以这里不用安装包的方式
+  4) 下载mysql-installer-community-5.6.10.1.msi，该程序为MySQL5.6
+* Apache安装配置
+  1) 一路下一步默认配置即可
+  2) 在Server Information中Network Domain中填wyj2046.com，Server Name中填www.wyj2046.com，邮箱中填自己的邮箱
+  3) 在Setup Type中选择Custom
+  4) 在Custom Setup中单击Apache HTTP Server 2.2.22的下黑色三角，选择第二个(即安装所有组件)，改变安装路径到www,如这样F:\www\Apache2.2\
+  5) Finish后，在浏览器中输入http://localhost 有反应就是安装成功并开启Apache了
+* PHP安装配置
+  1) 在www下目录下新建目录PHP
+  2) 将php-5.3.23-Win32-VC9-x86.zip的所有内容解压缩到上一步中的PHP目录中去
+  3) 将php.ini-development重命名为php.ini
+  4) 编辑php.ini，找到有mysql的那一行，把该行和下一行前的分号都删掉，即变为
+     #+BEGIN_VERSE
+     extension=php_mysql.dll
+     extension=php_mysqli.dll
+     #+END_VERSE
+  5) 设置windoes环境变量，使apache能找到php的模块；为环境变量里的Path变量增加值"F:\www\PHP;F:\www\PHP\ext"，重启后该步骤生效
+  6) 编辑httpd.conf文件，找到LoadModule，在最下面增加两行
+     #+BEGIN_VERSE
+     LoadModule php5_module F:/www/PHP/php5apache2_2.dll
+     PHPIniDir "F:/www/PHP"    
+     #+END_VERSE
+  7) 找到AddType，在最下面增加两行
+     #+BEGIN_VERSE
+     AddType application/x-httpd-php .php
+     AddType application/x-httpd-php .html    
+     #+END_VERSE
+  8) 找到DirectoryIndex，在后面增加index.php index.html index.html.var
+  9) 保存httpd.conf文件，重启apache服务器，即可支持php
+  10) 新建info.php文件，里面写上  <?php phpinfo(); ?>  把info.php放到F:\www\Apache2.2\htdocs里，打开浏览器，输入http://localhost/info.php ，即可查看PHP版本号(同时也验证了是否配置好Apache和PHP)
+* MySQL安装配置
+  这个没啥说的，一路下一步即可，注意选择安装路径，同时记得设密码-.-
+* 参考资料
+** http://tech.163.com/06/0206/11/299AMBLT0009159K.html

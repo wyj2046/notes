@@ -1,0 +1,230 @@
+#+TITLE: EmacsNotes
+#+AUTHOR: wyj
+#+EMAIL: rs@whu.edu.cn
+#+KEYWORDS: emacs, notes
+#+OPTIONS: H:2 toc:t ^:{}
+#+STYLE: <link rel="stylesheet" type="text/css" href="./style/style.css" />
+
+* 安装及环境配置
+
+** win7下配置emacs文件
+
+1) 用emacs打开~路径,一般是C:\Users\rapid\AppData\Roaming
+2) 看有没有.emacs文件，没有的话新建一个在.emacs里写上(load-file "E:/emacs-23.2/.emacs")
+3) 此时就可以在Emacs文件夹下的.emacs里加内容了
+** 崭新的ubuntu12.04安装Emacs24所要做的
+
+1) sudo apt-get install libx11-dev
+2) sudo apt-get install libgtk-3-dev | configure时加选项–with-x-toolkit=gtk3
+3) sudo apt-get install libncurses5-dev
+4) sudo apt-get install libxaw7-dev libxpm-dev libpng12-dev libjpeg-dev libtiff4-dev libgif-dev
+5) ./configure –with-x-toolkit=gtk3
+6) make
+7) src/emacs 这句测试emacs能用不
+8) sudo make install (END)
+** 字体设置
+
+1) 在菜单栏选择Options→Set Default font…
+2) Options→Save Options保存
+* 常用函数及变量描述
+#+begin_example
+describe-char 查看光标处字符所用字体
+describe-fonstset 查看各个字符集分别采用什么字体
+describie-font 产看当前所用字体描述
+describe-face 查看face的文档
+list-colors-display 显示所有颜色
+upcase-region 区域内大小写转换
+downcase-region 区域内大小写转换
+ielm 打开一个交互的elisp命令行解释器
+calc 打开计算器(采用逆波兰式计算)
+iimage-mode 显示图片
+byte-compile-file 将el代码编译为elc
+#+end_example
+  
+* 键绑定
+#+begin_example
+C-x ESC ESC   : 查看历史命令;M-P选择上一条命令，M-N选择下一条命令
+M-; : 注释/反注释一块区域
+C-x k : 删除当前缓冲
+C-x h : 全选
+C-s C-w : 搜索光标处单词
+C-x C-v : 刷新缓冲区
+C-RET : CUA模式下矩形选取
+C-c C-q : 在编程模式下格式化当前函数
+C-h m : 查看当前buffer对应的主mode和副mode的文档
+C-h b : 查看当前buffer所有的快捷键列表
+#+end_example
+
+* 插件相关
+
+** Desktop
+
+- 第一次使用desktop的时候,要运行M-x desktop-save命令
+** CEDET
+
+- CEDET中的semantic，要禁用semantic-stickyfunc-mode这个模式，需要在.emacs中写(global-semantic-stickyfunc-mode nil),不然会报错“Buffer scratch was not set up for parsing”
+- 关于semantic-stickyfunc-mode和tabbar冲突的问题
+#+BEGIN_VERSE
+   如果这句(setq semantic-stickyfunc-mode -1)在这句(semantic-load-enable-excessive-code-helpers)之前，则效果被覆盖，颠倒这两句的顺序则可以解决
+   *结论*:配置文件语句的顺序也挺重要的
+#+END_VERSE
+   
+** Cscope
+
+- 生成索引的方法
+  1) 先建一个cscope.files文件,命令:find . -name "*.h" -o -name "*.c" -o -name "*.cc" -o -name "*.cpp" -o -name "*.hpp" > cscope.files
+  2) 生成索引,命令:cscope -bkq -i cscope.files
+** W3M
+#+BEGIN_VERSE
+1 先用apt-get或urpmi安装w3m
+2 到 CVS 中下载最新版本的 w3m，可以用如下代码:
+       cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co emacs-w3m
+       里面有一个 README，如果懒得看的话，运行下面代码就好了：
+       $ autoconf
+       $ ./configure
+       $ make
+       $ sudo make install
+       $ sudo make install-icons
+       $ sudo make install-icons30
+3 在.emacs加入
+       (add-to-list 'load-path "usr/share/emacs/site-lisp/w3m")
+       (require 'w3m)
+#+END_VERSE
+
+** ECB
+
+- 执行M-x ecb-byte-compile编译，加快ECB的运行速度
+- 鼠标的支持 默认情况下，使用鼠标点击ECB窗口中的内容，不起作用，并不能打开它，要回车才可以。可以在Emacs中执行“M-x ecb-customize-most-important”，找到“Ecb Primary Secondary Mouse Buttons”选项，将其设为“Primary: mouse-1, secondary: mouse-2”，并且以“Save for Future Sessions”保存
+* 模式相关
+
+** c模式
+
+- c-toggle-auto-newline 自动换行(只要输入分号";"花括号"{","}",Emacs就会自动加上一个换行符并对新行做正确的缩进;状态行标志位(C/a))
+** shell模式
+
+- M-P : 重复上一条命令
+- C-c C-o : 清理屏幕(上一条命令输出的内容)
+* 小技巧
+
+** 不重新启动Emacs使.emacs的配置起作用(4选1)
+
+- 用 emacs 打开 .emacs 文件，C-x C-e 光标前面的运行一条语句。立即生效。
+- 选择一个 region , M-x eval-region
+- M-x load-file ~/.emacs
+- M-x eval-buffer
+** 在Emacs里面同时打开多个shell会话
+
+- 只要将当前的shell会话所在的缓冲区重新命名，然后就可以再次启动一个新的shell会话。输入 ESC-x rename-buffer，在 Rename buffer (to new name): 提示符后输入一个新名字，例如shellA；现在在任意一个窗口里面输入 ESC-x shell 启动 shell 会话，这时会看到一个新的 shell 缓冲区创建了出来，并且有了一个新的 shell 提示符
+** 重复命令
+
+- C-num可以重复一条命令，比如C-9 *可以连续插入9个星号 如果重复次数超过9了，需要用C-u来辅助，比如C-u 60 * 来插入60个星号
+** 在你定制快捷键却不知道这个快捷键该如何写的时候，就让Emacs来告诉你
+
+- 比如你想要把 “Alt+空格”绑定到 set-mark-command 上，可是又不知道“Alt+空格”在 Emacs 里应该如何表示，并且经过试验发现“M- ”是不行的。这个时候就需要 C-h k 来帮忙了。按下 C-h k 再按下“Alt+空格”
+** C-h 可以当前缀用，也可以当后缀用
+
+- 比如矩形操作的几个快捷键不太好记，但它们都是以C-x r为前缀的，于是按下C-x r，然后再按下C-h，Emacs就会列出所有以C-x r为前缀的快捷键及对应的命令
+* Bug fixs
+
+** 安装问题
+
+- Q:在ubuntu11.10下刚装好Emacs，启动后会出现一个Gtk-WARING:Unable to locate theme engine in module_path Solve:安装gtk2-engines-pixbuf包即可 命令:sudo apt-get install gtk2-engines-pixbuf
+- Q:启动Emacs后出现** (emacs:2821): CRITICAL **: murrine_style_draw_box: assertion `height >= -1' failed Solve:改变配置文件即可 sudo emacs /usr/share/themes/Ambiance/gtk-2.0/gtkrc打开后，把 GtkRange::trough-under-steppers = 0 修改为 GtkRange::trough-under-steppers = 1
+** Emacs中shell的乱码问题(3种解决方案)
+
+- 在.emacs中加(ansi-color-for-comint-mode-on)或(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+- 用M-x eshell代替
+- 用M-x ansi-term代替
+** Aspell
+
+1. Linux下
+   1) 先检查aspell和它的字典安装好了没有,在命令行下输入$:echo "hellP, world" | aspell -a -l en测试
+   2) 在.emacs加这三句 (setq-default ispell-program-name "aspell") (ispell-change-dictionary "american" t) (setq flyspell-issue-welcome-flag nil)
+   3) 第2步任然无效的情况下参照stack-overflow删文件
+2. Win下
+   1) M-x customize-variable RET ispell-program-name RET设置aspell.exe的路径
+   2) (ispell-change-dictionary "american" t) (setq flyspell-issue-welcome-flag nil)
+** Emacs24.1 + CEDET1.1 + ECB2.4
+先配置好从官网下下来的CEDET1.1，之后用elpa安装ECB2.4，启动ecb-activate，会出现一个“ecb-error: ECB 2.40 - Error: ECB can only be used with cedet [1.0pre6, 1.0.9]”这么一个错误，参考网址http://blog.csdn.net/cnsword/article/details/7474119 ， 把ecb-upgrade.el中的
+#+begin_src elisp
+      ;; check if vedet-version is correct
+(when (or (not (boundp 'cedet-version))
+         (ecb-package-version-list<
+         (ecb-package-version-str2list cedet-version)
+          ecb-required-cedet-version-min)
+         (ecb-package-version-list<
+          ecb-required-cedet-version-max
+          (ecb-package-version-str2list cedet-version)))
+ (setq version-error (concat "cedet ["
+                            cedet-required-version-str-min
+                            ", "
+                            cedet-required-version-str-max
+                           "]")))
+#+end_src
+注释掉后，重新byte-compile-file ecb-upgrade.el，这时再次启动ECB，会出现
+#+begin_example
+ecb-clean-up-after-activation-failure:
+ ECB 2.40: Errors during the basic setup of ECB. 
+(error-type: void-function, error-data:
+(ecb-enable-own-temp-buffer-show-futition))
+#+end_example
+这么一个错误，参考网址http://stackoverflow.com/questions/8833235/install-ecb-with-emacs-starter-kit-in-emacs-24 ，把ecb.el中的(ecb-enable-own-temp-buffer-show-futition)这句话注释掉，改为(ecb-enable-own-temp-buffer-show-function)，再次编译el，就可以成功运行ECB了
+* Elisp
+
+- 在elisp中，标识”nil”代表false，其它的一切都是true,包括0,”nil”是空链表”()”的同义词。所以”()”也是false
+- load每次都会加载,require则是已经加载过了就不加载,否则就加载,autoload则是调用的时候再require
+- 快捷键定制
+#+begin_example
+(global-set-key (kbd "C-j") 'goto-line)  全局绑定 kbd是Emacs的宏, 把快捷键转换为Emacs的内部按键表示
+(define-key c++-mode-map (kbd "C-j") 'goto-line)  绑定某个mode define-key第一个参数map一般为mode后面直接加”-map”
+#+end_example
+* org-mode
+
+** 自动补全内容元数据标记(省力啊，少打字)
+
+- 如在首行输入<s，然后按Tab，则自动出现#+begin_src #+end_src
+- 如在首行输入<e，然后按Tab，则自动出现#+begin_example #+end_example
+** 图片标记方式(5种)
+#+begin_example
+file://foo.png
+`file://foo.png'
+<foo.png>
+`foo.JPG'
+[[foo.gif]] 在win下导出为html形式时只有这种标记有用？
+#+end_example
+
+** 使导出的html格式符合某种风格
+#+begin_example
+在开头加这句
+" #+STYLE: <link rel="stylesheet" type="text/css" href="http://files.cnblogs.com/csophys/orgstyle.css" /> "
+参考网址 http://www.cnblogs.com/csophys/archive/2012/04/02/2429497.html
+       http://blog.csdn.net/pfanaya/article/details/7713743
+#+end_example
+* Misc
+** 几个好玩的模式
+#+begin_example
+zone butterfly morse-region glasses-mode gomoku pong
+#+end_example
+* FAQ
+#+BEGIN_VERSE
+    Q:win下，site-lisp和lisp这两个目录都是做什么用的呢？
+    A:惯例吧，lisp放emacs自带的，site-lisp放你的
+
+    Q:load和require加载配置文件的区别
+    A:用load加载配置文件的话，不需要配置文件做特殊处理
+      用require的话，在配置文件中，必须要有provide处理，这样才能加载相关插件，如：
+      在global-settings.el的最后，需要加上(provide 'global-settings)
+#+END_VERSE
+* 血的教训
+- 设置Emacs文件系统的编码格式 [[http://www.cnblogs.com/waterlin/archive/2009/11/06/1670298.html]]
+  重装系统后，Emacs 打开以前的文件，都显示为乱码，着实吓了我一跳。这个时候千万不要慌张，也不要随便地保存乱码的文件。 其实这只是 Emacs 读取文件的编码格式与你的文件格式不一样。我们可以用 M-x describe-coding-system 这个命令来查看一下 Emacs 是用什么编码来读取当前文件的。 比如说我的 org 文件都是用 UTF-8 来保存的，而打开某个 org 文件显示乱码，用命令 M-x describe-coding-system 显示当前解读的编码为： 1 -- iso-latin-1-unix (alias: iso-8859-1-unix latin-1-unix) Emacs 错把 UTF-8 的编码解读成了 latin 编码格式，难怪会乱码！ 这个时候，有两种解决办法。 把 Emacs 的默认编码设置为 UTF-8。 在 .emacs 文件里放入下面这段代码： ;; set the default text coding system (setq default-buffer-file-coding-system [...]
+* 有待折腾
+** anything
+** ecb
+** cscope
+** gtags
+** htags
+* 参考资料
+
+- 定制 Emacs 的字体 http://lifegoo.pluskid.org/wiki/EmacsAndFont.html
+- 如何设置让 Org Mode 在默认情况下，不转义 _ 字符 http://www.cnblogs.com/waterlin/archive/2011/10/09/2203996.html

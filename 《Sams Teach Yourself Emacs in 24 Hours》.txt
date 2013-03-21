@@ -1,0 +1,87 @@
+Tip - To find out what a given menu entry does, try pressing C-h k (describe-key) and select the menu entry.
+C-h k 查看菜单项描述
+
+To get a list of keybindings for the major mode, press C-h m (describe-mode) when it is enabled.
+C-h m 查看模式描述
+
+It is clearer that a given operation edits only the content within Emacs, not the content located in the file. 
+在保存之前编辑的是Emacs里的东西，而不是文件本身
+
+C-_ 撤销
+C-y(鼠标中键) 粘贴
+M-y 查看Kill-ring(或粘贴以前的东西，一直按一直找)
+C-w 剪切
+M-w 复制
+C-x i 插入文件
+
+C-t 交换两个字符
+M-t 交换两个单词
+
+M-e 定位到句尾
+M-a 定位到句首
+M-} 定位到段尾
+M-{ 定位到段首
+C-x ] 定位到页尾
+C-x [ 定位到页首
+
+Esc-g 定位到某行，需要加这句： (global-set-key [(meta g)] 'goto-line)
+C-l 使光标所在点位于窗口中央显示
+
+C-x C-w 写文件(另存为)
+
+C-h l 查看历史按键
+
+加了undo-tree插件后的undo与redo
+C-/ undo
+C-? redo
+
+C-x o 切换到另一个窗口
+
+
+在搜索(C-s)后按C-w可以补全
+搜索到后按Enter定位到字符串后
+搜索到后按M-b定位到字符串前
+C-s C-s 重复上次搜索
+C-s Enter 切换为普通文本搜索(可以用剪切板里的东西)
+
+M-%  查询替换 y(或space)替换 n(或Del)不替换 ！全部替换
+
+M-x occur 将所有要查询的东西所在的行列出到occur缓冲区中
+C-3 M-x occur 把段也显示出来
+
+M-. find-tag
+C-x 4 . find-tag-other-window
+c-x 5 . find-tag-other-frame
+M-, tags-loop-continue
+
+C-x r m 设置书签
+C-x r b 跳转到书签处
+
+C-h C-h 列出所有帮助选项
+C-h b 列出所有键绑定
+C-h i info
+
+M-x abbrev-mode 加载缩写模式
+C-x a i l inverse-add-mode-abbrev
+C-x a i g inverse-add-global-abbrev
+M-x edit-abbrevs 编辑缩写模式缓冲区
+
+M-/ 自动补全
+
+UNIX版的Emacs改变字体方式：Shift+鼠标左键
+或者用菜单：Options→Set Default Font
+
+
+开始记录宏:M-x start-kbd-macro
+结束记录宏:M-x end-kbd-macro
+执行宏:C-x e
+给宏起名:M-x name-last-kbd-macro
+
+
+启动Emacs时加参数-q将不会有加载.emacs里的内容，变清爽了
+
+
+C-c C-a 自动换行(Auto new line)切换 如果是自动换行的话，副模式会显示/a
+C-c C-d 饥饿的删除(Hungry delete)切换 如果是饥饿的删除你的话，副模式会显示/h
+饥饿的删除：按Backspace时删除不止一个空格，改行有多少个删除就删除多少个
+在.emacs中加这句(add-hook 'c-mode-hook (lambda () (c-toggle-auto-hungry-state 1)))，同时打开auto和hungry
